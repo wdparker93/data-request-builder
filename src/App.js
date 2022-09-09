@@ -16,20 +16,36 @@ function App() {
   const handleNameChange = () => {
     let inputs = document.getElementsByClassName("input-field");
     let tableNamesWorkingArr = [];
+    let fieldNamesWorkingArr = [];
     for (let i = 0; i < inputs.length; i++) {
       let input = inputs[i];
       let inputName = input.name;
+      let inputId = input.id;
+      //inputName will either be like table-1-name or table-1-field-1-name
       if (!inputName.includes("field")) {
-        let inputId = input.id;
+        let addAtTableIndex = parseInt(inputName.charAt(6)) - 1;
         tableNamesWorkingArr.splice(
-          i,
+          addAtTableIndex,
           0,
           document.getElementById(inputId).value
         );
+      } else {
+        let addAtTableIndex = parseInt(inputName.charAt(6)) - 1;
+        let addAtFieldIndex = parseInt(inputName.charAt(14)) - 1;
+        let currentTableFieldNames = fieldNamesWorkingArr[addAtTableIndex];
+        if (typeof currentTableFieldNames === "undefined") {
+          currentTableFieldNames = [];
+        }
+        currentTableFieldNames.splice(
+          addAtFieldIndex,
+          0,
+          document.getElementById(inputId).value
+        );
+        fieldNamesWorkingArr.splice(addAtTableIndex, 0, currentTableFieldNames);
       }
     }
-    console.log(tableNamesWorkingArr);
     setTableNames(tableNamesWorkingArr);
+    setFieldNames(fieldNamesWorkingArr);
   };
 
   return (
@@ -57,30 +73,6 @@ function App() {
                   type="text"
                   name="table-1-field-1-name"
                   id="table-1-field-1-name"
-                  size="30"
-                  className="input-field"
-                  onChange={handleNameChange}
-                ></input>
-              </div>
-            </div>
-            <div class="table-name-section">
-              <br />
-              <label for="table-2-name">Table 2 Name: </label>
-              <input
-                type="text"
-                name="table-2-name"
-                id="table-2-name"
-                size="30"
-                className="input-field"
-                onChange={handleNameChange}
-              ></input>
-              <div class="field-name-section">
-                <br />
-                <label for="table-2-field-1-name">Table 2 Field 1 Name: </label>
-                <input
-                  type="text"
-                  name="table-2-field-1-name"
-                  id="table-2-field-1-name"
                   size="30"
                   className="input-field"
                   onChange={handleNameChange}
