@@ -13,6 +13,25 @@ function App() {
     console.log("added field name");
   };
 
+  const handleNameChange = () => {
+    let inputs = document.getElementsByClassName("input-field");
+    let tableNamesWorkingArr = [];
+    for (let i = 0; i < inputs.length; i++) {
+      let input = inputs[i];
+      let inputName = input.name;
+      if (!inputName.includes("field")) {
+        let inputId = input.id;
+        tableNamesWorkingArr.splice(
+          i,
+          0,
+          document.getElementById(inputId).value
+        );
+      }
+    }
+    console.log(tableNamesWorkingArr);
+    setTableNames(tableNamesWorkingArr);
+  };
+
   return (
     <div className="App">
       <h1 id="main-heading">Data Definition Builder</h1>
@@ -20,7 +39,7 @@ function App() {
         <div id="field-name-wrapper">
           <h2 id="field-entry-heading">Enter Data Parameter Names</h2>
           <form id="field-name-array">
-            <div class="table-name-section" id="table-name-entry-wrapper">
+            <div class="table-name-section">
               <br />
               <label for="table-1-name">Table 1 Name: </label>
               <input
@@ -28,8 +47,10 @@ function App() {
                 name="table-1-name"
                 id="table-1-name"
                 size="30"
+                className="input-field"
+                onChange={handleNameChange}
               ></input>
-              <div class="field-name-section" id="table-field-entry-wrapper">
+              <div class="field-name-section">
                 <br />
                 <label for="table-1-field-1-name">Table 1 Field 1 Name: </label>
                 <input
@@ -37,6 +58,32 @@ function App() {
                   name="table-1-field-1-name"
                   id="table-1-field-1-name"
                   size="30"
+                  className="input-field"
+                  onChange={handleNameChange}
+                ></input>
+              </div>
+            </div>
+            <div class="table-name-section">
+              <br />
+              <label for="table-2-name">Table 2 Name: </label>
+              <input
+                type="text"
+                name="table-2-name"
+                id="table-2-name"
+                size="30"
+                className="input-field"
+                onChange={handleNameChange}
+              ></input>
+              <div class="field-name-section">
+                <br />
+                <label for="table-2-field-1-name">Table 2 Field 1 Name: </label>
+                <input
+                  type="text"
+                  name="table-2-field-1-name"
+                  id="table-2-field-1-name"
+                  size="30"
+                  className="input-field"
+                  onChange={handleNameChange}
                 ></input>
               </div>
             </div>
