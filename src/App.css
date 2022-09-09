@@ -23,4 +23,5 @@
   display: grid;
   grid-template-columns: 7vw 7vw;
   column-gap: 1vw;
+  row-gap: 2vh;
 }

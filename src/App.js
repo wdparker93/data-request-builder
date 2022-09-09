@@ -13,6 +13,11 @@ function App() {
     console.log("added field name");
   };
 
+  const submitFieldData = () => {
+    console.log(tableNames);
+    console.log(fieldNames);
+  };
+
   const handleNameChange = () => {
     let inputs = document.getElementsByClassName("input-field");
     let tableNamesWorkingArr = [];
@@ -98,6 +103,13 @@ function App() {
               onClick={addFieldName}
             >
               Add New Field
+            </button>
+            <button
+              className="field-button"
+              id="submit-field-data-button"
+              onClick={submitFieldData}
+            >
+              Submit Fields
             </button>
           </div>
         </div>
