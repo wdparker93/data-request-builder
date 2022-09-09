@@ -24,11 +24,6 @@ function App() {
     console.log(numFields);
   };
 
-  useEffect(() => {
-    setNumTables(1);
-    setNumFields(1);
-  }, []);
-
   const handleNameChange = () => {
     let inputs = document.getElementsByClassName("input-field");
     let tableNamesWorkingArr = [];
@@ -71,9 +66,9 @@ function App() {
         <div id="field-name-wrapper">
           <h2 id="field-entry-heading">Enter Data Parameter Names</h2>
           <form id="field-name-array">
-            <div class="table-name-section">
+            <div className="table-name-section">
               <br />
-              <label for="table-1-name">Table 1 Name: </label>
+              <label htmlFor="table-1-name">Table 1 Name: </label>
               <input
                 type="text"
                 name="table-1-name"
@@ -82,9 +77,11 @@ function App() {
                 className="input-field"
                 onChange={handleNameChange}
               ></input>
-              <div class="field-name-section">
+              <div className="field-name-section">
                 <br />
-                <label for="table-1-field-1-name">Table 1 Field 1 Name: </label>
+                <label htmlFor="table-1-field-1-name">
+                  Table 1 Field 1 Name:{" "}
+                </label>
                 <input
                   type="text"
                   name="table-1-field-1-name"
