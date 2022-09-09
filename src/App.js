@@ -8,11 +8,13 @@ function App() {
   const [numFields, setNumFields] = useState(1);
 
   const addTableName = () => {
-    setNumTables(numTables + 1);
+    let workingNumTables = numTables;
+    setNumTables(workingNumTables + 1);
   };
 
   const addFieldName = () => {
-    setNumFields(numFields + 1);
+    let workingNumFields = numFields;
+    setNumFields(workingNumFields + 1);
   };
 
   const submitFieldData = () => {
