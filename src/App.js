@@ -4,19 +4,28 @@ import React, { useState, useEffect } from "react";
 function App() {
   const [tableNames, setTableNames] = useState([]);
   const [fieldNames, setFieldNames] = useState([]);
+  const [numTables, setNumTables] = useState(1);
+  const [numFields, setNumFields] = useState(1);
 
   const addTableName = () => {
-    console.log("added table name");
+    setNumTables(numTables + 1);
   };
 
   const addFieldName = () => {
-    console.log("added field name");
+    setNumFields(numFields + 1);
   };
 
   const submitFieldData = () => {
     console.log(tableNames);
     console.log(fieldNames);
+    console.log(numTables);
+    console.log(numFields);
   };
+
+  useEffect(() => {
+    setNumTables(1);
+    setNumFields(1);
+  }, []);
 
   const handleNameChange = () => {
     let inputs = document.getElementsByClassName("input-field");
