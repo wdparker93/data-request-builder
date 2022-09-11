@@ -2,6 +2,7 @@
   text-align: left;
   position: relative;
   left: 3vw;
+  top: 2vh;
 }
 
 #interactive-section-wrapper {
@@ -9,12 +10,12 @@
   grid-template-columns: 65vw 35vw;
 }
 
-.table-name-section {
+.table-element {
   position: relative;
   left: 1.5vw;
 }
 
-.field-name-section {
+.field-element {
   position: relative;
   left: 3vw;
 }
