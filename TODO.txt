@@ -1,0 +1,7 @@
+1. Write captureState() (Save Data)
+2. Write code for deleting fields
+3. Write code for deleting tables
+4. Build python virtual environment
+5. Write code for exporting results to excel sheet
+6. Write code for import results to app
+7. Make it look nice?

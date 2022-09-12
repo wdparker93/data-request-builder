@@ -92,6 +92,8 @@ function App() {
   };
 
   //Saving and processing section
+  //submitFieldData needs to call a Python script and output
+  //the current data definition to an excel sheet
   const submitFieldData = () => {
     //console.log(tableNames);
     //console.log(fieldNames);
