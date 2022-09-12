@@ -10,8 +10,6 @@ function App() {
     1: ["T1F1", "T1F2"],
     2: ["T2F1", "T2F2"],
   });
-  const [numTables, setNumTables] = useState(1);
-  const [numFields, setNumFields] = useState(1);
   const [currentTableSelected, setCurrentTableSelected] = useState("");
   const [currentFieldSelected, setCurrentFieldSelected] = useState("");
   const [addFieldEnabled, setAddFieldEnabled] = useState(false);
@@ -97,8 +95,6 @@ function App() {
   const submitFieldData = () => {
     //console.log(tableNames);
     //console.log(fieldNames);
-    console.log(numTables);
-    console.log(numFields);
   };
 
   const captureState = () => {
