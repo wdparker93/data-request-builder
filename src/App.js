@@ -19,8 +19,22 @@ function App() {
 
   //Table selection and handling logic
   const addTableName = () => {
-    let workingNumTables = numTables;
-    setNumTables(workingNumTables + 1);
+    //Add the table
+    let workingTableNamesDict = Object.assign({}, tableNamesDict);
+    let newKey = 1;
+    for (const [key] of Object.entries(workingTableNamesDict)) {
+      if (key > newKey) {
+        newKey = key;
+      }
+    }
+    newKey++;
+    workingTableNamesDict[newKey] = "T" + newKey;
+    setTableNamesDict(workingTableNamesDict);
+    //Add an empty field
+    let workingFieldNamesDict = Object.assign({}, fieldNamesDict);
+    let fieldValue = "T" + newKey + "F1";
+    workingFieldNamesDict[newKey] = [fieldValue];
+    setFieldNamesDict(workingFieldNamesDict);
   };
 
   const setTableSelection = () => {
