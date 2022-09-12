@@ -3,7 +3,7 @@ function EntryFields(props) {
   //Produces an element that will contain a field or table name
   const DataElement = (tableNameElementData) => {
     let data = tableNameElementData.elementData;
-    //Fields will be logically set based on whether its a field or table
+    //Fields will be logically set based on whether it's a field or table
     let tableNumber = data.charAt(1);
     let fieldNumber = "";
     let elementValue = "";

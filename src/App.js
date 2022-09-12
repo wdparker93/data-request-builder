@@ -45,13 +45,8 @@ function App() {
 
   //Field selection and handling logic
   const addFieldName = () => {
-    let selectedTable = currentTableSelected;
-    let workingFieldNamesDict = fieldNamesDict;
-    console.log(workingFieldNamesDict);
-    let fieldListForTable = workingFieldNamesDict[selectedTable];
-    fieldListForTable.splice(fieldListForTable.length, 0, "");
-    workingFieldNamesDict[selectedTable] = fieldListForTable;
-    console.log(workingFieldNamesDict);
+    let workingFieldNamesDict = Object.assign({}, fieldNamesDict);
+    workingFieldNamesDict[currentTableSelected].push("");
     setFieldNamesDict(workingFieldNamesDict);
   };
 
@@ -65,10 +60,8 @@ function App() {
     }
     setCurrentFieldSelected(fieldAlias);
     if (fieldAlias.length > 0) {
-      console.log("enabled");
       setDeleteFieldEnabled(true);
     } else {
-      console.log("disabled");
       setDeleteFieldEnabled(false);
     }
   };
