@@ -1,5 +1,4 @@
-import "../css/EntryFields.css";
-
+//Produces the fields that will contain the data definitions
 function EntryFields(props) {
   //Produces an element that will contain a field or table name
   const DataElement = (tableNameElementData) => {

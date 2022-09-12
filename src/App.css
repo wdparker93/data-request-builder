@@ -10,6 +10,13 @@
   grid-template-columns: 65vw 35vw;
 }
 
+#field-add-btn-tbl-selector-wrapper {
+  display: grid;
+  grid-template-columns: 8vw 8vw;
+  column-gap: 1vw;
+  row-gap: 0.5vh;
+}
+
 .table-element {
   position: relative;
   left: 1.5vw;
@@ -22,7 +29,7 @@
 
 #button-wrapper {
   display: grid;
-  grid-template-columns: 7vw 7vw;
+  grid-template-columns: 7vw 12vw;
   column-gap: 1vw;
   row-gap: 2vh;
 }
