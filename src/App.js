@@ -190,17 +190,17 @@ function App() {
             </div>
             <button
               className="button"
-              id="submit-field-data-button"
-              onClick={submitFieldData}
-            >
-              Export Data
-            </button>
-            <button
-              className="button"
               id="test-capture-state-button"
               onClick={captureState}
             >
               Save Data
+            </button>
+            <button
+              className="button"
+              id="submit-field-data-button"
+              onClick={submitFieldData}
+            >
+              Export Data
             </button>
           </div>
         </div>
