@@ -14,3 +14,4 @@ with(open(outputPath, "a")) as f:
     for i in range(len(nameArray)):
         tableSheet.cell(row=outputRow, column=tableNameEntryCol).value = nameArray[i]
         outputRow += 1
+    outputDataDefWB.save(filename='C:\\Users\\wdpar\\vs_code_repos\\data-request-builder\\docs\\output\\OutputDataDefinition.xlsx')
