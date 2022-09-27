@@ -5,3 +5,8 @@
 5. Write code for exporting results to excel sheet
 6. Write code for import results to app
 7. Make it look nice?
+
+THIS IS HOW TO INSTALL PYTHON IN VIRTUAL ENVIRONMENT
+1. Navigate to the .venv you created
+2. Run py -m pip install package-name
+3. To create venv run py -m venv .venv

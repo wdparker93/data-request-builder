@@ -1,4 +1,5 @@
 import "./App.css";
+import Axios from "axios";
 import EntryFields from "./secondary-components/js/EntryFields.js";
 import TableOptionsComponent from "./secondary-components/js/TableOptionsComponent.js";
 import FieldOptionsComponent from "./secondary-components/js/FieldOptionsComponent.js";
@@ -97,6 +98,27 @@ function App() {
   const submitFieldData = () => {
     //console.log(tableNames);
     //console.log(fieldNames);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    };
+    console.log("In Submit Field Data");
+    Axios.post(
+      "http://127.0.0.1:5000/writeToExcelFile",
+      {
+        value: "testing",
+      },
+      config
+    ).then(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   const captureState = () => {
