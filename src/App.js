@@ -96,19 +96,17 @@ function App() {
   //submitFieldData needs to call a Python script and output
   //the current data definition to an excel sheet
   const submitFieldData = () => {
-    //console.log(tableNames);
-    //console.log(fieldNames);
     const config = {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
     };
-    console.log("In Submit Field Data");
     Axios.post(
       "http://127.0.0.1:5000/writeToExcelFile",
       {
-        value: "testing",
+        tableNames: tableNamesDict,
+        fieldNames: fieldNamesDict,
       },
       config
     ).then(
@@ -149,6 +147,8 @@ function App() {
         fieldNamesWorkingDict[tableNumber] = currentTableFieldNames;
       }
     }
+    console.log(tableNamesWorkingDict);
+    console.log(fieldNamesWorkingDict);
     setTableNamesDict(tableNamesWorkingDict);
     setFieldNamesDict(fieldNamesWorkingDict);
   };

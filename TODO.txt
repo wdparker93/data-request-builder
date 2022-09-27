@@ -10,3 +10,7 @@ THIS IS HOW TO INSTALL PYTHON IN VIRTUAL ENVIRONMENT
 1. Navigate to the .venv you created
 2. Run py -m pip install package-name
 3. To create venv run py -m venv .venv
+
+TO RUN APP:
+1. Navigate to src\python and enter py WriteToExcelFile.py to launch Flask server
+2. Run npm run start to get react web app running.

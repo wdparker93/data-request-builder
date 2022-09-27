@@ -6,37 +6,39 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 CORS(app)
-#CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/writeToExcelFile", methods=['POST'])
 def writeToExcelFile():
     
     print("HERE!")
-    print(request)
-    print(request.content_type)
-    print(request.mimetype)
     print(request.json)
-    jsonData = request.json
-    value = jsonData['value']
-    print(value)
-    #print(request.form['value'])
-    #jsData = request.form['value']
-    #print(jsData)
+    print(request.json['tableNames'])
+    tableNameDict = request.json['tableNames']
+    print(request.json['fieldNames'])
     
     outputPath = 'C:\\Users\\wdpar\\vs_code_repos\\data-request-builder\\docs\\output\\OutputDataDefinition.xlsx'
 
     outputDataDefWB = openpyxl.load_workbook(outputPath)
-    tableSheet = outputDataDefWB.active
+    tableSheet = outputDataDefWB['Table_Names']
+    fieldSheet = outputDataDefWB['Field_Names']
 
-    tableNameEntryCol = 1
+    nameEntryCol = 1
     outputRow = 1
 
-    nameArray = ['Will', 'is', 'cool', 'and', 'smart', 'and stuff']
+    #nameArray = ['Will', 'is', 'cool', 'and', 'smart', 'and stuff']
 
     with(open(outputPath, "a")) as f:
-        for i in range(len(nameArray)):
-            tableSheet.cell(row=outputRow, column=tableNameEntryCol).value = nameArray[i]
+        #Clear the previous workbook's contents
+        for row in tableSheet['A1':'A100']:
+            for cell in row:
+                cell.value = None
+        for row in fieldSheet['A1':'A100']:
+            for cell in row:
+                cell.value = None
+
+        for key in tableNameDict:
+            tableSheet.cell(row=outputRow, column=nameEntryCol).value = tableNameDict[key]
             outputRow += 1
         outputDataDefWB.save(filename='C:\\Users\\wdpar\\vs_code_repos\\data-request-builder\\docs\\output\\OutputDataDefinition.xlsx')
     
