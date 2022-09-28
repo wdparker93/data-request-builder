@@ -3,6 +3,7 @@ function EntryFields(props) {
   //Produces an element that will contain a field or table name
   const DataElement = (tableNameElementData) => {
     let data = tableNameElementData.elementData;
+    console.log(data);
     //Fields will be logically set based on whether it's a field or table
     let tableNumber = data.charAt(1);
     let fieldNumber = "";
@@ -12,17 +13,19 @@ function EntryFields(props) {
     let htmlClassName = "";
     //The entire array value including labeler (T1F1, etc.)
     let indexOfColon = data.indexOf(":");
-    if (indexOfColon === 2) {
+    let identifier = data.substring(0, indexOfColon);
+    if (!identifier.includes("F")) {
       //A table element
-      elementValue = data.substring(3);
+      let indexOfF = data.indexOf("F");
+      elementValue = data.substring(indexOfColon);
       htmlElementName += tableNumber + "-name";
       htmlLabelValue += tableNumber;
       htmlClassName = "table-element";
-    } else if (indexOfColon === 4) {
+    } else if (identifier.includes("F")) {
       //A field element
       fieldNumber = data.charAt(3);
-      elementValue = data.substring(5);
-      htmlElementName += tableNumber + "field-" + fieldNumber + "-name";
+      elementValue = data.substring(indexOfColon);
+      htmlElementName += tableNumber + "-field-" + fieldNumber + "-name";
       htmlLabelValue += tableNumber + " Field " + fieldNumber;
       htmlClassName = "field-element";
     }

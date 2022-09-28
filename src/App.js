@@ -47,6 +47,7 @@ function App() {
     }
   };
 
+  //Generates a list of tables that exist
   const generateTableOptions = () => {
     let optionsArray = [];
     optionsArray.push("");
@@ -79,6 +80,7 @@ function App() {
     }
   };
 
+  //Generates a list of fields that exist under a specified table
   const generateFieldOptions = () => {
     let optionsArray = [];
     optionsArray.push("");
@@ -111,7 +113,7 @@ function App() {
       config
     ).then(
       (response) => {
-        console.log(response);
+        //Ok
       },
       (error) => {
         console.log(error);
@@ -119,6 +121,7 @@ function App() {
     );
   };
 
+  //Saves the state of the fields as they appear currently
   const captureState = () => {
     let inputs = document.getElementsByClassName("input-field");
     let tableNamesWorkingDict = {};
@@ -129,10 +132,12 @@ function App() {
       let inputId = input.id;
       //inputName will either be like table-1-name or table-1-field-1-name
       if (!inputName.includes("field")) {
+        //a table
         let tableNumber = parseInt(inputName.charAt(6));
         tableNamesWorkingDict[tableNumber] =
           document.getElementById(inputId).value;
       } else {
+        //a field
         let tableNumber = parseInt(inputName.charAt(6));
         let addAtFieldIndex = parseInt(inputName.charAt(14)) - 1;
         let currentTableFieldNames = [];
@@ -147,8 +152,6 @@ function App() {
         fieldNamesWorkingDict[tableNumber] = currentTableFieldNames;
       }
     }
-    console.log(tableNamesWorkingDict);
-    console.log(fieldNamesWorkingDict);
     setTableNamesDict(tableNamesWorkingDict);
     setFieldNamesDict(fieldNamesWorkingDict);
   };

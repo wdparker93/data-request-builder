@@ -3,6 +3,9 @@
   position: relative;
   left: 3vw;
   top: 2vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100vw;
 }
 
 #interactive-section-wrapper {
