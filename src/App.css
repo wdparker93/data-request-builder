@@ -3,9 +3,9 @@
   position: relative;
   left: 3vw;
   top: 2vh;
-  overflow-y: scroll;
+  max-width: 100vw;
   overflow-x: hidden;
-  width: 100vw;
+  overflow-y: hidden;
 }
 
 #interactive-section-wrapper {
@@ -18,6 +18,8 @@
   grid-template-columns: 8vw 8vw;
   column-gap: 1vw;
   row-gap: 0.5vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .table-element {

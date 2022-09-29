@@ -124,6 +124,9 @@ function App() {
   //Saves the state of the fields as they appear currently
   const captureState = () => {
     let inputs = document.getElementsByClassName("input-field");
+    let checkBoxes = document.getElementsByClassName("radio-button");
+    console.log(checkBoxes);
+    console.log(checkBoxes[0].value);
     let tableNamesWorkingDict = {};
     let fieldNamesWorkingDict = {};
     for (let i = 0; i < inputs.length; i++) {
