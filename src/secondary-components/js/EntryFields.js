@@ -15,8 +15,7 @@ function EntryFields(props) {
     let htmlElementName = "table-";
     let htmlLabelValue = "Table ";
     let htmlClassName = "";
-    let htmlRadioClassName = "radio-button";
-    let htmlRadioElementName = "";
+    let htmlCheckBoxElementName = "";
 
     if (!identifier.includes("F")) {
       //A table element with identifier TXX:VALUE
@@ -33,7 +32,7 @@ function EntryFields(props) {
       htmlLabelValue += tableNumber + " Field " + fieldNumber;
       htmlClassName = "field-element";
     }
-    htmlRadioElementName = htmlElementName + "-radio-button";
+    htmlCheckBoxElementName = htmlElementName + "-checkbox";
 
     return (
       <>
@@ -49,9 +48,9 @@ function EntryFields(props) {
           ></input>
           <input
             type="checkbox"
-            name={htmlRadioElementName}
-            id={htmlRadioElementName}
-            className={htmlRadioClassName}
+            name={htmlCheckBoxElementName}
+            id={htmlCheckBoxElementName}
+            className="checkbox"
           ></input>
         </form>
       </>
