@@ -1,10 +1,11 @@
 //Produces the fields that will contain the data definitions
 function EntryFields(props) {
+  //A dictionary of the checkboxes and their respective values
+  let checkBoxDict = [];
   //Produces an element that will contain a field or table name
   const DataElement = (tableNameElementData) => {
     //The entire array value including labeler (T1F1:VALUE, etc.)
     let data = tableNameElementData.elementData;
-    //Fields will be logically set based on whether it's a field or table
     let tableNumber = "";
     let indexOfColon = data.indexOf(":");
     //The field's value
@@ -51,10 +52,16 @@ function EntryFields(props) {
             name={htmlCheckBoxElementName}
             id={htmlCheckBoxElementName}
             className="checkbox"
+            onClick={() => handleCheckBox(htmlCheckBoxElementName)}
           ></input>
         </form>
       </>
     );
+  };
+
+  const handleCheckBox = (elementName) => {
+    let checkBox = document.getElementById(elementName);
+    checkBoxDict[checkBox.id] = checkBox.checked;
   };
 
   const convertDictToArray = (tableOrField) => {
@@ -80,6 +87,15 @@ function EntryFields(props) {
     }
     returnArray = returnArray.sort();
     return returnArray;
+  };
+
+  const updateCheckBoxDict = () => {
+    let workingCheckBoxDict = [];
+    let checkBoxes = document.getElementsByClassName("checkbox");
+    for (let i = 0; i < checkBoxes.length; i++) {
+      workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
+    }
+    checkBoxDict = workingCheckBoxDict;
   };
 
   //Convert the dictionaries to arrays, combine them, and sort the entries.
@@ -153,6 +169,8 @@ function EntryFields(props) {
     }
     return 0;
   });
+
+  updateCheckBoxDict();
 
   const renderOutputDataElements = () => {
     return aggregateArray.map((el) => <DataElement elementData={el} />);
