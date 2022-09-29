@@ -4,7 +4,6 @@ function EntryFields(props) {
   const DataElement = (tableNameElementData) => {
     //The entire array value including labeler (T1F1:VALUE, etc.)
     let data = tableNameElementData.elementData;
-    console.log(data);
     //Fields will be logically set based on whether it's a field or table
     let tableNumber = "";
     let indexOfColon = data.indexOf(":");
@@ -26,7 +25,8 @@ function EntryFields(props) {
     } else if (identifier.includes("F")) {
       //A field element
       let indexOfF = data.indexOf("F");
-      fieldNumber = data.substring(indexOfF, indexOfColon);
+      tableNumber = data.substring(1, indexOfF);
+      fieldNumber = data.substring(indexOfF + 1, indexOfColon);
       htmlElementName += tableNumber + "-field-" + fieldNumber + "-name";
       htmlLabelValue += tableNumber + " Field " + fieldNumber;
       htmlClassName = "field-element";
@@ -69,6 +69,7 @@ function EntryFields(props) {
         }
       }
     }
+    returnArray = returnArray.sort();
     return returnArray;
   };
 
@@ -76,7 +77,72 @@ function EntryFields(props) {
   let tableNameArray = convertDictToArray("T");
   let fieldNameArray = convertDictToArray("F");
   let aggregateArray = tableNameArray.concat(fieldNameArray);
-  aggregateArray = aggregateArray.sort();
+  aggregateArray = aggregateArray.sort(function (item1, item2) {
+    let item1ColonIndex = item1.indexOf(":");
+    let item2ColonIndex = item2.indexOf(":");
+    let item1Identifier = item1.substring(0, item1ColonIndex);
+    let item2Identifier = item2.substring(0, item2ColonIndex);
+    let item1IsField = item1Identifier.includes("F");
+    let item2IsField = item2Identifier.includes("F");
+    if (item1IsField && item2IsField) {
+      //Both are fields
+      let item1FIndex = item1Identifier.indexOf("F");
+      let item2FIndex = item2Identifier.indexOf("F");
+      let item1FieldNo = parseInt(
+        item1Identifier.substring(item1FIndex + 1, item1ColonIndex)
+      );
+      let item1TableNo = parseInt(item1Identifier.substring(1, item1FIndex));
+      let item2FieldNo = parseInt(
+        item2Identifier.substring(item2FIndex + 1, item2ColonIndex)
+      );
+      let item2TableNo = parseInt(item2Identifier.substring(1, item2FIndex));
+      if (item1FieldNo < item2FieldNo && item1TableNo <= item2TableNo) {
+        return -1;
+      }
+      if (item1FieldNo > item2FieldNo && item1TableNo >= item2TableNo) {
+        return 1;
+      }
+      if (item1FieldNo === item2FieldNo) {
+        return 0;
+      }
+    } else if (!item1IsField && item2IsField) {
+      //item1 is a table and item2 is a field
+      let item2FIndex = item2.indexOf("F");
+      let item1TableNo = parseInt(item1.substring(1, item1ColonIndex));
+      let item2TableNo = parseInt(item2.substring(1, item2FIndex));
+      //Tables will always go before fields of the same table
+      //or after fields with an equal or greater value
+      if (item1TableNo < item2TableNo) {
+        return -1;
+      }
+      if (item1TableNo > item2TableNo) {
+        return 1;
+      }
+    } else if (item1IsField && !item2IsField) {
+      //item1 is a field and item2 is a table
+      let item1FIndex = item1.indexOf("F");
+      let item1TableNo = parseInt(item1.substring(1, item1FIndex));
+      let item2TableNo = parseInt(item2.substring(1, item2ColonIndex));
+      //Tables will always go before fields of the same table
+      //or after fields with an equal or greater value
+      if (item1TableNo < item2TableNo) {
+        return -1;
+      }
+      if (item1TableNo > item2TableNo) {
+        return 1;
+      }
+    } else if (!item1IsField && !item2IsField) {
+      //Both are table identifiers
+      let item1TableNo = parseInt(item1.substring(1, item1ColonIndex));
+      let item2TableNo = parseInt(item2.substring(1, item2ColonIndex));
+      if (item1TableNo < item2TableNo) {
+        return -1;
+      }
+      if (item1TableNo > item2TableNo) {
+        return 1;
+      }
+    }
+  });
 
   const renderOutputDataElements = () => {
     return aggregateArray.map((el) => <DataElement elementData={el} />);
