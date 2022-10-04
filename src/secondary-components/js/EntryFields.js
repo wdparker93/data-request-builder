@@ -53,6 +53,7 @@ function EntryFields(props) {
             id={htmlCheckBoxElementName}
             className="checkbox"
             onClick={() => handleCheckBox(htmlCheckBoxElementName)}
+            checked={checkBoxDict[{ htmlCheckBoxElementName }]}
           ></input>
         </form>
       </>
@@ -60,8 +61,20 @@ function EntryFields(props) {
   };
 
   const handleCheckBox = (elementName) => {
+    buildCheckBoxDict();
     let checkBox = document.getElementById(elementName);
     checkBoxDict[checkBox.id] = checkBox.checked;
+    props.checkBoxUpdateHandler(checkBoxDict);
+  };
+
+  const buildCheckBoxDict = () => {
+    let workingCheckBoxDict = [];
+    let checkBoxes = document.getElementsByClassName("checkbox");
+    for (let i = 0; i < checkBoxes.length; i++) {
+      workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
+    }
+    checkBoxDict = workingCheckBoxDict;
+    console.log(checkBoxDict["table-1-name-checkbox"]);
   };
 
   const convertDictToArray = (tableOrField) => {
@@ -85,17 +98,7 @@ function EntryFields(props) {
         }
       }
     }
-    returnArray = returnArray.sort();
     return returnArray;
-  };
-
-  const updateCheckBoxDict = () => {
-    let workingCheckBoxDict = [];
-    let checkBoxes = document.getElementsByClassName("checkbox");
-    for (let i = 0; i < checkBoxes.length; i++) {
-      workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
-    }
-    checkBoxDict = workingCheckBoxDict;
   };
 
   //Convert the dictionaries to arrays, combine them, and sort the entries.
@@ -169,8 +172,11 @@ function EntryFields(props) {
     }
     return 0;
   });
-
-  updateCheckBoxDict();
+  if (props.checkBoxes.length > 0) {
+    checkBoxDict = props.checkBoxes;
+  } else {
+    buildCheckBoxDict();
+  }
 
   const renderOutputDataElements = () => {
     return aggregateArray.map((el) => <DataElement elementData={el} />);

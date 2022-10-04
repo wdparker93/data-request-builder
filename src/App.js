@@ -16,6 +16,8 @@ function App() {
   const [addFieldEnabled, setAddFieldEnabled] = useState(false);
   const [deleteFieldEnabled, setDeleteFieldEnabled] = useState(false);
 
+  let checkBoxDict = [];
+
   //Table selection and handling logic
   const addTableName = () => {
     //Add the table
@@ -124,9 +126,6 @@ function App() {
   //Saves the state of the fields as they appear currently
   const captureState = () => {
     let inputs = document.getElementsByClassName("input-field");
-    let checkBoxes = document.getElementsByClassName("checkbox");
-    console.log(checkBoxes);
-    console.log(checkBoxes[0].value);
     let tableNamesWorkingDict = {};
     let fieldNamesWorkingDict = {};
     for (let i = 0; i < inputs.length; i++) {
@@ -136,13 +135,30 @@ function App() {
       //inputName will either be like table-1-name or table-1-field-1-name
       if (!inputName.includes("field")) {
         //a table
-        let tableNumber = parseInt(inputName.charAt(6));
+        let tableNumber = parseInt(
+          inputName.substring(
+            inputName.indexOf("table-") + 6,
+            inputName.indexOf("-name")
+          )
+        );
         tableNamesWorkingDict[tableNumber] =
           document.getElementById(inputId).value;
       } else {
         //a field
-        let tableNumber = parseInt(inputName.charAt(6));
-        let addAtFieldIndex = parseInt(inputName.charAt(14)) - 1;
+        let tableNumber = parseInt(
+          inputName.substring(
+            inputName.indexOf("table-") + 6,
+            inputName.indexOf("-field")
+          )
+        );
+        //let oldaddAtFieldIndex = parseInt(inputName.charAt(14)) - 1;
+        let addAtFieldIndex =
+          parseInt(
+            inputName.substring(
+              inputName.indexOf("field-") + 6,
+              inputName.indexOf("-name")
+            )
+          ) - 1;
         let currentTableFieldNames = [];
         if (typeof fieldNamesWorkingDict[tableNumber] !== "undefined") {
           currentTableFieldNames = fieldNamesWorkingDict[tableNumber];
@@ -159,6 +175,28 @@ function App() {
     setFieldNamesDict(fieldNamesWorkingDict);
   };
 
+  useEffect(() => {
+    initCheckBoxDict();
+  });
+
+  const initCheckBoxDict = () => {
+    if (checkBoxDict.length === 0) {
+      let workingCheckBoxDict = [];
+      let checkBoxes = document.getElementsByClassName("checkbox");
+      for (let i = 0; i < checkBoxes.length; i++) {
+        workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
+      }
+      checkBoxDict = workingCheckBoxDict;
+    }
+    console.log(checkBoxDict);
+  };
+
+  const checkBoxUpdateHandler = (checkBoxes) => {
+    console.log("UPDATING");
+    checkBoxDict = checkBoxes;
+    console.log(checkBoxDict);
+  };
+
   //Render to browser
   return (
     <div className="App">
@@ -169,6 +207,8 @@ function App() {
           <EntryFields
             tableNamesParam={tableNamesDict}
             fieldNamesParam={fieldNamesDict}
+            checkBoxes={checkBoxDict}
+            checkBoxUpdateHandler={checkBoxUpdateHandler}
           />
         </div>
         <div id="button-section-wrapper">
