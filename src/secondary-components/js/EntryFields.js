@@ -1,7 +1,5 @@
 //Produces the fields that will contain the data definitions
 function EntryFields(props) {
-  //A dictionary of the checkboxes and their respective values
-  let checkBoxDict = [];
   //Produces an element that will contain a field or table name
   const DataElement = (tableNameElementData) => {
     //The entire array value including labeler (T1F1:VALUE, etc.)
@@ -53,7 +51,7 @@ function EntryFields(props) {
             id={htmlCheckBoxElementName}
             className="checkbox"
             onClick={() => handleCheckBox(htmlCheckBoxElementName)}
-            checked={checkBoxDict[{ htmlCheckBoxElementName }]}
+            defaultChecked={props.checkBoxes[htmlCheckBoxElementName]}
           ></input>
         </form>
       </>
@@ -61,20 +59,10 @@ function EntryFields(props) {
   };
 
   const handleCheckBox = (elementName) => {
-    buildCheckBoxDict();
     let checkBox = document.getElementById(elementName);
-    checkBoxDict[checkBox.id] = checkBox.checked;
-    props.checkBoxUpdateHandler(checkBoxDict);
-  };
-
-  const buildCheckBoxDict = () => {
-    let workingCheckBoxDict = [];
-    let checkBoxes = document.getElementsByClassName("checkbox");
-    for (let i = 0; i < checkBoxes.length; i++) {
-      workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
-    }
-    checkBoxDict = workingCheckBoxDict;
-    console.log(checkBoxDict["table-1-name-checkbox"]);
+    let workingCheckBoxDict = props.checkBoxes;
+    workingCheckBoxDict[checkBox.id] = checkBox.checked;
+    props.checkBoxUpdateHandler(workingCheckBoxDict);
   };
 
   const convertDictToArray = (tableOrField) => {
@@ -172,11 +160,6 @@ function EntryFields(props) {
     }
     return 0;
   });
-  if (props.checkBoxes.length > 0) {
-    checkBoxDict = props.checkBoxes;
-  } else {
-    buildCheckBoxDict();
-  }
 
   const renderOutputDataElements = () => {
     return aggregateArray.map((el) => <DataElement elementData={el} />);

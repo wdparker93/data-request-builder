@@ -15,8 +15,7 @@ function App() {
   const [currentFieldSelected, setCurrentFieldSelected] = useState("");
   const [addFieldEnabled, setAddFieldEnabled] = useState(false);
   const [deleteFieldEnabled, setDeleteFieldEnabled] = useState(false);
-
-  let checkBoxDict = [];
+  const [checkBoxDictionary, setCheckBoxDictionary] = useState([]);
 
   //Table selection and handling logic
   const addTableName = () => {
@@ -176,25 +175,19 @@ function App() {
   };
 
   useEffect(() => {
-    initCheckBoxDict();
-  });
-
-  const initCheckBoxDict = () => {
-    if (checkBoxDict.length === 0) {
+    const updateCheckBoxDict = async () => {
       let workingCheckBoxDict = [];
       let checkBoxes = document.getElementsByClassName("checkbox");
       for (let i = 0; i < checkBoxes.length; i++) {
         workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
       }
-      checkBoxDict = workingCheckBoxDict;
-    }
-    console.log(checkBoxDict);
-  };
+      setCheckBoxDictionary(workingCheckBoxDict);
+    };
+    updateCheckBoxDict();
+  }, []);
 
   const checkBoxUpdateHandler = (checkBoxes) => {
-    console.log("UPDATING");
-    checkBoxDict = checkBoxes;
-    console.log(checkBoxDict);
+    setCheckBoxDictionary(checkBoxes);
   };
 
   //Render to browser
@@ -207,7 +200,7 @@ function App() {
           <EntryFields
             tableNamesParam={tableNamesDict}
             fieldNamesParam={fieldNamesDict}
-            checkBoxes={checkBoxDict}
+            checkBoxes={checkBoxDictionary}
             checkBoxUpdateHandler={checkBoxUpdateHandler}
           />
         </div>
