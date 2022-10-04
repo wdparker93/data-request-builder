@@ -14,8 +14,14 @@ def writeToExcelFile():
     
     tableNameDict = request.json['tableNames']
     fieldNameDict = request.json['fieldNames']
+    checkBoxDict = request.json['checkBoxes']
+    print(tableNameDict)
+    print(fieldNameDict)
+    checkBoxDict = convertCheckBoxIds(checkBoxDict)
+    print(checkBoxDict)
 
-    #Get to the project root folder
+    #Get to the project root folder,
+    #then navigate to the output excel file
     currentDirectory = Path(os.getcwd())
     parentDirectory = currentDirectory
     for i in range(2):
@@ -32,10 +38,10 @@ def writeToExcelFile():
 
     with(open(outputPath, "a")) as f:
         #Clear the previous workbook's contents
-        for row in tableSheet['A1':'A100']:
+        for row in tableSheet['A1':'A1000']:
             for cell in row:
                 cell.value = None
-        for row in fieldSheet['A1':'A100']:
+        for row in fieldSheet['A1':'A1000']:
             for cell in row:
                 cell.value = None
         #Enter table names to table sheet
@@ -57,6 +63,30 @@ def writeToExcelFile():
         outputDataDefWB.save(filename=os.getcwd() + '\\OutputDataDefinition.xlsx')
     
     return make_response("Success", 200)
+
+#Converts the checkBoxDict to a format that's relatable to the table names
+def convertCheckBoxIds(checkBoxParam):
+    for i in range(len(checkBoxParam)):
+        checkBoxEntry = checkBoxParam[i]
+        checkBoxId = checkBoxEntry[0]
+        checkBoxCheckedVal = checkBoxEntry[1]
+        if "field" in checkBoxId:
+            #A field
+            tableNumStart = checkBoxId.index("table-") + 6
+            tableNumEnd = checkBoxId.index("-field")
+            tableNumber = int(checkBoxId[tableNumStart:tableNumEnd])
+            print("Table")
+            print(str(tableNumber))
+            fieldNumStart = checkBoxId.index("field-") + 6
+            fieldNumEnd = checkBoxId.index("-name")
+            fieldNumber = int(checkBoxId[fieldNumStart:fieldNumEnd])
+            print("Field")
+            print(str(fieldNumber))
+        else:
+            #A table
+            print("A table")
+        
+    return "TEST"
 
 if __name__ == "__main__":
     app.run()

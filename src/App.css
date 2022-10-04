@@ -10,7 +10,13 @@
 
 #interactive-section-wrapper {
   display: grid;
-  grid-template-columns: 65vw 35vw;
+  grid-template-columns: 60vw 40vw;
+}
+
+#main-divider {
+  position: relative;
+  left: -6vw;
+  width: 90vw;
 }
 
 #field-add-btn-tbl-selector-wrapper {
@@ -34,7 +40,7 @@
 
 #button-wrapper {
   display: grid;
-  grid-template-columns: 7vw 12vw;
+  grid-template-columns: 7vw 18vw;
   column-gap: 1vw;
   row-gap: 2vh;
 }

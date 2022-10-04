@@ -99,6 +99,15 @@ function App() {
   //submitFieldData needs to call a Python script and output
   //the current data definition to an excel sheet
   const submitFieldData = () => {
+    let checkBoxParamArray = [];
+    let index = 0;
+    for (const [key] of Object.entries(checkBoxDictionary)) {
+      let entryArray = [];
+      entryArray.splice(0, 0, key);
+      entryArray.splice(1, 0, checkBoxDictionary[key]);
+      checkBoxParamArray.splice(index, 0, entryArray);
+      index++;
+    }
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -110,6 +119,7 @@ function App() {
       {
         tableNames: tableNamesDict,
         fieldNames: fieldNamesDict,
+        checkBoxes: checkBoxParamArray,
       },
       config
     ).then(
@@ -194,6 +204,7 @@ function App() {
   return (
     <div className="App">
       <h1 id="main-heading">Data Definition Builder</h1>
+      <hr id="main-divider" />
       <div id="interactive-section-wrapper">
         <div id="field-name-wrapper">
           <h2 id="field-entry-heading">Enter Data Parameter Names</h2>
