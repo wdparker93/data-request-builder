@@ -82,7 +82,6 @@ function EntryFields(props) {
     } else {
       workingCheckBoxDict[checkBox.id] = checkBox.checked;
     }
-    console.log(workingCheckBoxDict);
     props.checkBoxUpdateHandler(workingCheckBoxDict, isTableBox);
   };
 

@@ -1,10 +1,13 @@
-1. Write captureState() (Save Data)
+DONE 1. Write captureState() (Save Data)
 2. Write code for deleting fields
 3. Write code for deleting tables
-4. Build python virtual environment
-5. Write code for exporting results to excel sheet
-6. Write code for import results to app
+DONE 4. Build python virtual environment
+DONE 5. Write code for exporting results to excel sheet
+6. Write code for importing results to app
 7. Make it look nice?
+8. Make state get saved when clicking export
+9. When clicking a field check box, check the parent table's box
+10. Build check/uncheck all button
 
 THIS IS HOW TO INSTALL PYTHON IN VIRTUAL ENVIRONMENT
 1. Navigate to the .venv you created
