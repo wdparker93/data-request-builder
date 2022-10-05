@@ -17,8 +17,10 @@ def writeToExcelFile():
     checkBoxDict = request.json['checkBoxes']
     print(tableNameDict)
     print(fieldNameDict)
-    checkBoxDict = convertCheckBoxIds(checkBoxDict)
-    print(checkBoxDict)
+    tableCheckBoxDict = buildTableCheckBoxDict(checkBoxDict)
+    fieldCheckBoxDict = buildFieldCheckBoxDict(checkBoxDict)
+    print(tableCheckBoxDict)
+    print(fieldCheckBoxDict)
 
     #Get to the project root folder,
     #then navigate to the output excel file
@@ -46,8 +48,9 @@ def writeToExcelFile():
                 cell.value = None
         #Enter table names to table sheet
         for key in tableNameDict:
-            tableSheet.cell(row=outputRow, column=nameEntryCol).value = tableNameDict[key]
-            outputRow += 1
+            if tableCheckBoxDict[key]:
+                tableSheet.cell(row=outputRow, column=nameEntryCol).value = tableNameDict[key]
+                outputRow += 1
 
         
         #Reset the output row to row 1 before write to fields sheet
@@ -55,38 +58,60 @@ def writeToExcelFile():
 
         #Enter field names in field sheet
         for key in fieldNameDict:
-            fieldNames = fieldNameDict[key]
-            for i in range(len(fieldNames)):
-                fieldSheet.cell(row=outputRow, column=nameEntryCol).value = fieldNames[i]
-                outputRow += 1
+            if tableCheckBoxDict[key]:
+                fieldNames = fieldNameDict[key]
+                for i in range(len(fieldNames)):
+                    if fieldCheckBoxDict[key][i]:
+                        fieldSheet.cell(row=outputRow, column=nameEntryCol).value = fieldNames[i]
+                        outputRow += 1
 
         outputDataDefWB.save(filename=os.getcwd() + '\\OutputDataDefinition.xlsx')
     
     return make_response("Success", 200)
 
-#Converts the checkBoxDict to a format that's relatable to the table names
-def convertCheckBoxIds(checkBoxParam):
+#Converts the checkBoxDict to a format that matches the table name dictionary
+def buildTableCheckBoxDict(checkBoxParam):
+    returnDictionary = {}
+    for i in range(len(checkBoxParam)):
+        checkBoxEntry = checkBoxParam[i]
+        checkBoxId = checkBoxEntry[0]
+        checkBoxCheckedVal = checkBoxEntry[1]
+        if "field" not in checkBoxId:
+            #Get the tableNumber which will be the key in the returnDictionary
+            tableNumStart = checkBoxId.index("table-") + 6
+            tableNumEnd = checkBoxId.index("-name")
+            tableNumber = int(checkBoxId[tableNumStart:tableNumEnd])
+            tableNumberKey = str(tableNumber)
+            #Add the fields to the dicionary's entry's array
+            returnDictionary[tableNumberKey] = checkBoxCheckedVal
+    return returnDictionary
+
+
+#Converts the checkBoxDict to a format that matches the field name dictionary
+def buildFieldCheckBoxDict(checkBoxParam):
+    returnDictionary = {}
     for i in range(len(checkBoxParam)):
         checkBoxEntry = checkBoxParam[i]
         checkBoxId = checkBoxEntry[0]
         checkBoxCheckedVal = checkBoxEntry[1]
         if "field" in checkBoxId:
-            #A field
+            #Get the tableNumber which will be the key in the returnDictionary
             tableNumStart = checkBoxId.index("table-") + 6
             tableNumEnd = checkBoxId.index("-field")
             tableNumber = int(checkBoxId[tableNumStart:tableNumEnd])
-            print("Table")
-            print(str(tableNumber))
+            tableNumberKey = str(tableNumber)
+            #Get the fieldNumber which will be used as indexes in the returnDictionary
             fieldNumStart = checkBoxId.index("field-") + 6
             fieldNumEnd = checkBoxId.index("-name")
             fieldNumber = int(checkBoxId[fieldNumStart:fieldNumEnd])
-            print("Field")
-            print(str(fieldNumber))
-        else:
-            #A table
-            print("A table")
-        
-    return "TEST"
+            fieldIndex = fieldNumber - 1
+            #Add the fields to the dicionary's entry's array
+            if tableNumberKey in returnDictionary:
+                returnDictionary[tableNumberKey].insert(fieldIndex, checkBoxCheckedVal)
+            else:
+                returnDictionary[tableNumberKey] = []
+                returnDictionary[tableNumberKey].insert(0, checkBoxCheckedVal)
+    return returnDictionary
 
 if __name__ == "__main__":
     app.run()
