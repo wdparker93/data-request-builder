@@ -196,7 +196,7 @@ function App() {
     updateCheckBoxDict();
   }, []);
 
-  const checkBoxUpdateHandler = (checkBoxes) => {
+  const checkBoxUpdateHandler = (checkBoxes, isTableBox) => {
     setCheckBoxDictionary(checkBoxes);
   };
 

@@ -60,9 +60,38 @@ function EntryFields(props) {
 
   const handleCheckBox = (elementName) => {
     let checkBox = document.getElementById(elementName);
+    let isTableBox = isTableCheckBox(checkBox.id);
     let workingCheckBoxDict = props.checkBoxes;
-    workingCheckBoxDict[checkBox.id] = checkBox.checked;
-    props.checkBoxUpdateHandler(workingCheckBoxDict);
+    if (isTableBox && checkBox.checked === false) {
+      let checkBoxNameIndex = checkBox.id.indexOf("-name");
+      let checkBoxTableName = checkBox.id.substring(0, checkBoxNameIndex);
+      for (const [key] of Object.entries(workingCheckBoxDict)) {
+        let tableName = "";
+        if (key.includes("-field")) {
+          let fieldIndex = key.indexOf("-field");
+          tableName = key.substring(0, fieldIndex);
+        } else {
+          let nameIndex = key.indexOf("-name");
+          tableName = key.substring(0, nameIndex);
+        }
+        if (tableName === checkBoxTableName) {
+          workingCheckBoxDict[key] = checkBox.checked;
+          document.getElementById(key).checked = checkBox.checked;
+        }
+      }
+    } else {
+      workingCheckBoxDict[checkBox.id] = checkBox.checked;
+    }
+    console.log(workingCheckBoxDict);
+    props.checkBoxUpdateHandler(workingCheckBoxDict, isTableBox);
+  };
+
+  const isTableCheckBox = (checkBoxId) => {
+    if (checkBoxId.includes("field")) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   const convertDictToArray = (tableOrField) => {
