@@ -200,6 +200,27 @@ function App() {
     setCheckBoxDictionary(checkBoxes);
   };
 
+  const selectDeselectAll = () => {
+    let checkBoxes = document.getElementsByClassName("checkbox");
+    let atLeastOneBoxChecked = false;
+    let numChecked = 0;
+    for (let i = 0; i < checkBoxes.length; i++) {
+      if (checkBoxes[i].checked) {
+        atLeastOneBoxChecked = true;
+        numChecked++;
+      }
+    }
+    let valueToSet = true;
+    if (numChecked === checkBoxes.length) {
+      valueToSet = false;
+    }
+    let workingCheckBoxDict = [];
+    for (let i = 0; i < checkBoxes.length; i++) {
+      workingCheckBoxDict[checkBoxes[i].id] = valueToSet;
+    }
+    setCheckBoxDictionary(workingCheckBoxDict);
+  };
+
   //Render to browser
   return (
     <div className="App">
@@ -274,10 +295,24 @@ function App() {
             </button>
             <button
               className="button"
+              id="select-deselect-all-button"
+              onClick={selectDeselectAll}
+            >
+              Check / Uncheck All
+            </button>
+            <button
+              className="button"
               id="submit-field-data-button"
               onClick={submitFieldData}
             >
               Export Data
+            </button>
+            <button
+              className="button"
+              id="select-deselect-all-button"
+              onClick={selectDeselectAll}
+            >
+              Upload Fields from File
             </button>
           </div>
         </div>
