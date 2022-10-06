@@ -221,6 +221,10 @@ function App() {
     setCheckBoxDictionary(workingCheckBoxDict);
   };
 
+  const importFromFile = () => {
+    console.log("IMPORT FROM FILE");
+  };
+
   //Render to browser
   return (
     <div className="App">
@@ -309,10 +313,10 @@ function App() {
             </button>
             <button
               className="button"
-              id="select-deselect-all-button"
-              onClick={selectDeselectAll}
+              id="import-data-button"
+              onClick={importFromFile}
             >
-              Upload Fields from File
+              Import Fields from File
             </button>
           </div>
         </div>

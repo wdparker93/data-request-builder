@@ -63,6 +63,7 @@ function EntryFields(props) {
     let isTableBox = isTableCheckBox(checkBox.id);
     let workingCheckBoxDict = props.checkBoxes;
     if (isTableBox && checkBox.checked === false) {
+      //If unchecking a table box, uncheck its children fields
       let checkBoxNameIndex = checkBox.id.indexOf("-name");
       let checkBoxTableName = checkBox.id.substring(0, checkBoxNameIndex);
       for (const [key] of Object.entries(workingCheckBoxDict)) {
@@ -79,6 +80,16 @@ function EntryFields(props) {
           document.getElementById(key).checked = checkBox.checked;
         }
       }
+    } else if (!isTableBox && checkBox.checked === true) {
+      //If checking a field box, check its parent field
+      let checkBoxFieldIndex = checkBox.id.indexOf("-field");
+      let correspondingTableBoxId = checkBox.id.substring(
+        0,
+        checkBoxFieldIndex
+      );
+      correspondingTableBoxId += "-name-checkbox";
+      let tableBox = document.getElementById(correspondingTableBoxId);
+      tableBox.checked = checkBox.checked;
     } else {
       workingCheckBoxDict[checkBox.id] = checkBox.checked;
     }
