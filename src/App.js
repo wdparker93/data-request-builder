@@ -50,6 +50,7 @@ function App() {
     let fieldValue = "T" + newKey + "F1";
     workingFieldNamesDict[newKey] = [fieldValue];
     setFieldNamesDict(workingFieldNamesDict);
+    updateCheckBoxDict();
   };
 
   const setTableSelection = () => {
@@ -78,6 +79,7 @@ function App() {
     let workingFieldNamesDict = Object.assign({}, fieldNamesDict);
     workingFieldNamesDict[currentTableSelected].push("");
     setFieldNamesDict(workingFieldNamesDict);
+    updateCheckBoxDict();
   };
 
   //Sets the field currently selected
@@ -178,6 +180,9 @@ function App() {
         }
       }
     }
+    console.log(workingTableDict);
+    console.log(workingFieldDict);
+    console.log(workingCheckBoxDict);
     setCheckBoxDictionary(workingCheckBoxDict);
     setTableNamesDict(workingTableDict);
     setFieldNamesDict(workingFieldDict);
@@ -277,7 +282,6 @@ function App() {
       console.log("useEffect");
       let workingCheckBoxDict = [];
       let checkBoxes = document.getElementsByClassName("checkbox");
-      console.log(checkBoxes);
       for (let i = 0; i < checkBoxes.length; i++) {
         workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
       }
@@ -285,6 +289,15 @@ function App() {
     };
     refreshState();
   }, []);
+
+  const updateCheckBoxDict = () => {
+    let workingCheckBoxDict = [];
+    let checkBoxes = document.getElementsByClassName("checkbox");
+    for (let i = 0; i < checkBoxes.length; i++) {
+      workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
+    }
+    setCheckBoxDictionary(workingCheckBoxDict);
+  };
 
   const checkBoxUpdateHandler = (checkBoxes) => {
     setCheckBoxDictionary(checkBoxes);
