@@ -21,13 +21,28 @@ function App() {
   const addTableName = () => {
     //Add the table
     let workingTableNamesDict = Object.assign({}, tableNamesDict);
-    let newKey = 1;
+    let newKey = 0;
+    let prevKey = 0;
+    let gapInKeysFound = false;
     for (const [key] of Object.entries(workingTableNamesDict)) {
-      if (key > newKey) {
-        newKey = key;
+      if (!gapInKeysFound) {
+        if (parseInt(key) > newKey) {
+          newKey = parseInt(key);
+        }
+        if (prevKey !== parseInt(key) - 1) {
+          prevKey++;
+          gapInKeysFound = true;
+        }
+        if (!gapInKeysFound) {
+          prevKey++;
+        }
       }
     }
-    newKey++;
+    if (gapInKeysFound) {
+      newKey = prevKey;
+    } else {
+      newKey++;
+    }
     workingTableNamesDict[newKey] = "T" + newKey;
     setTableNamesDict(workingTableNamesDict);
     //Add an empty field
@@ -41,7 +56,7 @@ function App() {
     let selector = document.getElementById("table-selector");
     let tableSelected = selector.value;
     setCurrentTableSelected(tableSelected);
-    if (tableSelected !== "") {
+    if (tableSelected !== "" && tableSelected !== "None") {
       setAddFieldEnabled(true);
     } else {
       setAddFieldEnabled(false);
@@ -65,6 +80,7 @@ function App() {
     setFieldNamesDict(workingFieldNamesDict);
   };
 
+  //Sets the field currently selected
   const setFieldSelection = () => {
     let selectedTable = currentTableSelected;
     let fieldSelector = document.getElementById("field-selector");
@@ -85,14 +101,86 @@ function App() {
   const generateFieldOptions = () => {
     let optionsArray = [];
     optionsArray.push("");
-    if (currentTableSelected !== "") {
+    if (currentTableSelected !== "" && tableNamesDict[currentTableSelected]) {
       for (const [value] of Object.entries(
         fieldNamesDict[currentTableSelected]
       )) {
         optionsArray.push(value);
       }
     }
-    return optionsArray.map((el) => <FieldOptionsComponent elementData={el} />);
+    let returnArray = optionsArray.map((el) => (
+      <FieldOptionsComponent elementData={el} />
+    ));
+    returnArray.splice(
+      1,
+      0,
+      <>
+        <option value="All">All</option>
+      </>
+    );
+    return returnArray;
+  };
+
+  //Deletes the selected field or table from the view
+  const deleteSelectedField = () => {
+    let tableKeyToDelete = currentTableSelected;
+    let currentFieldSelectedColonIndex = currentFieldSelected.indexOf(":");
+    let fieldToDelete = currentFieldSelected.substring(
+      currentFieldSelectedColonIndex + 1
+    );
+    let checkBoxKey = "table-" + currentTableSelected;
+    let tableLevelCheckBoxKey = checkBoxKey;
+    if (fieldToDelete !== "All") {
+      fieldToDelete = fieldToDelete - 1;
+      checkBoxKey +=
+        "-field-" +
+        currentFieldSelected.substring(0, currentFieldSelectedColonIndex);
+    }
+    checkBoxKey += "-name-checkbox";
+    let workingTableDict = Object.assign({}, tableNamesDict);
+    let workingFieldDict = Object.assign({}, fieldNamesDict);
+    let workingCheckBoxDict = Object.assign({}, checkBoxDictionary);
+    if (
+      fieldToDelete === "All" ||
+      workingFieldDict[tableKeyToDelete].length === 1
+    ) {
+      if (workingTableDict[tableKeyToDelete]) {
+        delete workingTableDict[tableKeyToDelete];
+      }
+      if (workingFieldDict[tableKeyToDelete]) {
+        delete workingFieldDict[tableKeyToDelete];
+      }
+      for (const [key] of Object.entries(workingCheckBoxDict)) {
+        if (
+          key.substring(0, tableLevelCheckBoxKey.length) ===
+          tableLevelCheckBoxKey
+        ) {
+          delete workingCheckBoxDict[key];
+        }
+      }
+      document.getElementById("table-selector").value = "None";
+      document.getElementById("field-selector").value = "None";
+      setAddFieldEnabled(false);
+      setDeleteFieldEnabled(false);
+    } else {
+      let tableArray = workingFieldDict[tableKeyToDelete];
+      delete tableArray[fieldToDelete];
+      let newArray = [];
+      for (let i = 0; i < tableArray.length; i++) {
+        if (tableArray[i]) {
+          newArray.push(tableArray[i]);
+        }
+      }
+      workingFieldDict[tableKeyToDelete] = newArray;
+      for (const [key] of Object.entries(workingCheckBoxDict)) {
+        if (key === checkBoxKey) {
+          delete workingCheckBoxDict[key];
+        }
+      }
+    }
+    setCheckBoxDictionary(workingCheckBoxDict);
+    setTableNamesDict(workingTableDict);
+    setFieldNamesDict(workingFieldDict);
   };
 
   //Saving and processing section
@@ -185,18 +273,20 @@ function App() {
   };
 
   useEffect(() => {
-    const updateCheckBoxDict = async () => {
+    const refreshState = async () => {
+      console.log("useEffect");
       let workingCheckBoxDict = [];
       let checkBoxes = document.getElementsByClassName("checkbox");
+      console.log(checkBoxes);
       for (let i = 0; i < checkBoxes.length; i++) {
         workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
       }
       setCheckBoxDictionary(workingCheckBoxDict);
     };
-    updateCheckBoxDict();
+    refreshState();
   }, []);
 
-  const checkBoxUpdateHandler = (checkBoxes, isTableBox) => {
+  const checkBoxUpdateHandler = (checkBoxes) => {
     setCheckBoxDictionary(checkBoxes);
   };
 
@@ -286,8 +376,9 @@ function App() {
                 className="button"
                 id="delete-field-name-button"
                 disabled={!deleteFieldEnabled}
+                onClick={deleteSelectedField}
               >
-                Delete Field
+                Delete Field(s)
               </button>
             </div>
             <button

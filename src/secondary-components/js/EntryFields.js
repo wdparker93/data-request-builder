@@ -93,7 +93,7 @@ function EntryFields(props) {
     } else {
       workingCheckBoxDict[checkBox.id] = checkBox.checked;
     }
-    props.checkBoxUpdateHandler(workingCheckBoxDict, isTableBox);
+    props.checkBoxUpdateHandler(workingCheckBoxDict);
   };
 
   const isTableCheckBox = (checkBoxId) => {
