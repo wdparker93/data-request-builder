@@ -138,6 +138,7 @@ function App() {
         "-field-" +
         currentFieldSelected.substring(0, currentFieldSelectedColonIndex);
     }
+    console.log(fieldToDelete);
     checkBoxKey += "-name-checkbox";
     let workingTableDict = Object.assign({}, tableNamesDict);
     let workingFieldDict = Object.assign({}, fieldNamesDict);
@@ -169,7 +170,8 @@ function App() {
       delete tableArray[fieldToDelete];
       let newArray = [];
       for (let i = 0; i < tableArray.length; i++) {
-        if (tableArray[i]) {
+        console.log(tableArray[i]);
+        if (tableArray[i] !== undefined) {
           newArray.push(tableArray[i]);
         }
       }
@@ -180,9 +182,9 @@ function App() {
         }
       }
     }
-    console.log(workingTableDict);
-    console.log(workingFieldDict);
-    console.log(workingCheckBoxDict);
+    //console.log(workingTableDict);
+    //console.log(workingFieldDict);
+    //console.log(workingCheckBoxDict);
     setCheckBoxDictionary(workingCheckBoxDict);
     setTableNamesDict(workingTableDict);
     setFieldNamesDict(workingFieldDict);
@@ -279,7 +281,6 @@ function App() {
 
   useEffect(() => {
     const refreshState = async () => {
-      console.log("useEffect");
       let workingCheckBoxDict = [];
       let checkBoxes = document.getElementsByClassName("checkbox");
       for (let i = 0; i < checkBoxes.length; i++) {
