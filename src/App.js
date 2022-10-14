@@ -259,7 +259,25 @@ function App() {
       config
     ).then(
       (response) => {
-        console.log(response);
+        let returnDicts = response.data;
+        let tableDict = returnDicts["Tables"];
+        let fieldDict = returnDicts["Fields"];
+        //console.log(tableDict);
+        //console.log(tableNamesDict);
+        //console.log(fieldDict);
+        //console.log(fieldNamesDict);
+        //console.log(fieldDict["1"][0][0]);
+        setTableNamesDict(tableDict);
+        for (const [key] of Object.entries(fieldDict)) {
+          let fieldNameArr = fieldDict[key][0];
+          let arrToSet = [];
+          for (let i = 0; i < fieldNameArr.length; i++) {
+            arrToSet.push(fieldNameArr[i]);
+          }
+          fieldDict[key] = [];
+          fieldDict[key] = arrToSet;
+        }
+        setFieldNamesDict(fieldDict);
       },
       (error) => {
         console.log(error);

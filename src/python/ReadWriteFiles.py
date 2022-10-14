@@ -71,11 +71,40 @@ def writeToExcelFile():
 
 @app.route("/readFromTextFile", methods=['POST'])
 def readFromTextFile():
+    #Get file stream from SpooledTemporaryFile
     storage = request.files['files']
+    inputText = ''
     with storage.stream as f:
-        test = f.read()
-        print(test)
-    return make_response("Success", 200)
+        inputText = f.read()
+        print(inputText)
+    #Write byte stream to temporary text file to make it easier when parsing
+    currentDirectory = os.getcwd()
+    tempTextFile = currentDirectory + '\\TempOutputFile.txt'
+    with open(tempTextFile, 'wb') as f:
+        f.write(inputText)
+    #Parse temporary text file into data structures
+    tableDict = {}
+    fieldDict = {}
+    with open(tempTextFile, 'r') as f:
+        lineNum = 1
+        tableCounter = 1
+        for line in f.readlines():
+            line = line.replace('\r', '')
+            line = line.replace('\n', '')
+            if lineNum % 2 != 0:
+                tableDict[str(tableCounter)] = line
+            else:
+                fieldArr = [line.split(',')]
+                fieldDict[str(tableCounter)] = fieldArr
+                tableCounter += 1
+            lineNum += 1
+    returnDict = {}
+    returnDict['Tables'] = tableDict
+    returnDict['Fields'] = fieldDict
+    #Delete the temporary text file
+    os.remove(tempTextFile)
+    #Return the data structure with fields assigned and organized
+    return make_response(returnDict, 200)
 
 #Converts the checkBoxDict to a format that matches the table name dictionary
 def buildTableCheckBoxDict(checkBoxParam):
