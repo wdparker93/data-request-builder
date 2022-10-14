@@ -28,6 +28,12 @@
   overflow-x: hidden;
 }
 
+#file-select-upload-wrapper {
+  display: grid;
+  grid-template-columns: 18vw;
+  row-gap: 0.5vh;
+}
+
 .table-element {
   position: relative;
   left: 1.5vw;

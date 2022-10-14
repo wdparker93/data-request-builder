@@ -3,7 +3,7 @@ import Axios from "axios";
 import EntryFields from "./secondary-components/js/EntryFields.js";
 import TableOptionsComponent from "./secondary-components/js/TableOptionsComponent.js";
 import FieldOptionsComponent from "./secondary-components/js/FieldOptionsComponent.js";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 function App() {
   const [tableNamesDict, setTableNamesDict] = useState({ 1: "T1", 2: "T2" });
@@ -15,7 +15,10 @@ function App() {
   const [currentFieldSelected, setCurrentFieldSelected] = useState("");
   const [addFieldEnabled, setAddFieldEnabled] = useState(false);
   const [deleteFieldEnabled, setDeleteFieldEnabled] = useState(false);
+  const [uploadFromFileEnabled, setUploadFromFileEnabled] = useState(false);
   const [checkBoxDictionary, setCheckBoxDictionary] = useState([]);
+  const [file, setFile] = useState("");
+  const inputFile = useRef(null);
 
   //Table selection and handling logic
   const addTableName = () => {
@@ -227,6 +230,43 @@ function App() {
     );
   };
 
+  const handleFileUpload = (e) => {
+    const { files } = e.target;
+    if (files && files.length) {
+      const file = files[0];
+      var parts = file.name.split(".");
+      const fileType = parts[parts.length - 1];
+      setFile(file);
+      if (fileType === "txt") {
+        setUploadFromFileEnabled(true);
+      } else {
+        setUploadFromFileEnabled(false);
+      }
+    }
+  };
+
+  const importFromFile = () => {
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    Axios.post(
+      "http://127.0.0.1:5000/readFromTextFile",
+      {
+        files: file,
+      },
+      config
+    ).then(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
   //Saves the state of the fields as they appear currently
   const captureState = () => {
     let inputs = document.getElementsByClassName("input-field");
@@ -306,11 +346,9 @@ function App() {
 
   const selectDeselectAll = () => {
     let checkBoxes = document.getElementsByClassName("checkbox");
-    let atLeastOneBoxChecked = false;
     let numChecked = 0;
     for (let i = 0; i < checkBoxes.length; i++) {
       if (checkBoxes[i].checked) {
-        atLeastOneBoxChecked = true;
         numChecked++;
       }
     }
@@ -323,10 +361,6 @@ function App() {
       workingCheckBoxDict[checkBoxes[i].id] = valueToSet;
     }
     setCheckBoxDictionary(workingCheckBoxDict);
-  };
-
-  const importFromFile = () => {
-    console.log("IMPORT FROM FILE");
   };
 
   //Render to browser
@@ -416,13 +450,17 @@ function App() {
             >
               Export Data
             </button>
-            <button
-              className="button"
-              id="import-data-button"
-              onClick={importFromFile}
-            >
-              Import Fields from File
-            </button>
+            <div id="file-select-upload-wrapper">
+              <button
+                className="button"
+                id="import-data-button"
+                onClick={importFromFile}
+                disabled={!uploadFromFileEnabled}
+              >
+                Import Fields from Text File
+              </button>
+              <input ref={inputFile} onChange={handleFileUpload} type="file" />
+            </div>
           </div>
         </div>
       </div>

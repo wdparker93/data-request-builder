@@ -15,12 +15,12 @@ def writeToExcelFile():
     tableNameDict = request.json['tableNames']
     fieldNameDict = request.json['fieldNames']
     checkBoxDict = request.json['checkBoxes']
-    print(tableNameDict)
-    print(fieldNameDict)
+    #print(tableNameDict)
+    #print(fieldNameDict)
     tableCheckBoxDict = buildTableCheckBoxDict(checkBoxDict)
     fieldCheckBoxDict = buildFieldCheckBoxDict(checkBoxDict)
-    print(tableCheckBoxDict)
-    print(fieldCheckBoxDict)
+    #print(tableCheckBoxDict)
+    #print(fieldCheckBoxDict)
 
     #Get to the project root folder,
     #then navigate to the output excel file
@@ -67,6 +67,14 @@ def writeToExcelFile():
 
         outputDataDefWB.save(filename=os.getcwd() + '\\OutputDataDefinition.xlsx')
     
+    return make_response("Success", 200)
+
+@app.route("/readFromTextFile", methods=['POST'])
+def readFromTextFile():
+    storage = request.files['files']
+    with storage.stream as f:
+        test = f.read()
+        print(test)
     return make_response("Success", 200)
 
 #Converts the checkBoxDict to a format that matches the table name dictionary
