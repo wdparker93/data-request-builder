@@ -10,6 +10,7 @@ DONE 9. When clicking a field check box, check the parent table's box
 DONE 10. Build check/uncheck all button
 DONE 11. Need to update checkbox array upone deletion correctly
 DONE 12. Launch file explorer when reading from text file
+DONE 13. Checkboxes not updating when clicking export. Need to fix.
 
 THIS IS HOW TO INSTALL PYTHON IN VIRTUAL ENVIRONMENT
 1. Navigate to the .venv you created

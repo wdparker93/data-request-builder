@@ -15,12 +15,12 @@ def writeToExcelFile():
     tableNameDict = request.json['tableNames']
     fieldNameDict = request.json['fieldNames']
     checkBoxDict = request.json['checkBoxes']
-    #print(tableNameDict)
-    #print(fieldNameDict)
+    print(tableNameDict)
+    print(fieldNameDict)
     tableCheckBoxDict = buildTableCheckBoxDict(checkBoxDict)
     fieldCheckBoxDict = buildFieldCheckBoxDict(checkBoxDict)
-    #print(tableCheckBoxDict)
-    #print(fieldCheckBoxDict)
+    print(tableCheckBoxDict)
+    print(fieldCheckBoxDict)
 
     #Get to the project root folder,
     #then navigate to the output excel file

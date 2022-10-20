@@ -19,6 +19,7 @@ function App() {
   const [checkBoxDictionary, setCheckBoxDictionary] = useState([]);
   const [file, setFile] = useState("");
   const inputFile = useRef(null);
+  const checkBoxDictRef = useRef(checkBoxDictionary);
 
   //Table selection and handling logic
   const addTableName = () => {
@@ -53,7 +54,6 @@ function App() {
     let fieldValue = "T" + newKey + "F1";
     workingFieldNamesDict[newKey] = [fieldValue];
     setFieldNamesDict(workingFieldNamesDict);
-    updateCheckBoxDict();
   };
 
   const setTableSelection = () => {
@@ -74,7 +74,9 @@ function App() {
     for (const [key] of Object.entries(tableNamesDict)) {
       optionsArray.push(key);
     }
-    return optionsArray.map((el) => <TableOptionsComponent elementData={el} />);
+    return React.Children.toArray(
+      optionsArray.map((el) => <TableOptionsComponent elementData={el} />)
+    );
   };
 
   //Field selection and handling logic
@@ -82,7 +84,6 @@ function App() {
     let workingFieldNamesDict = Object.assign({}, fieldNamesDict);
     workingFieldNamesDict[currentTableSelected].push("");
     setFieldNamesDict(workingFieldNamesDict);
-    updateCheckBoxDict();
   };
 
   //Sets the field currently selected
@@ -141,7 +142,6 @@ function App() {
         "-field-" +
         currentFieldSelected.substring(0, currentFieldSelectedColonIndex);
     }
-    console.log(fieldToDelete);
     checkBoxKey += "-name-checkbox";
     let workingTableDict = Object.assign({}, tableNamesDict);
     let workingFieldDict = Object.assign({}, fieldNamesDict);
@@ -173,7 +173,6 @@ function App() {
       delete tableArray[fieldToDelete];
       let newArray = [];
       for (let i = 0; i < tableArray.length; i++) {
-        console.log(tableArray[i]);
         if (tableArray[i] !== undefined) {
           newArray.push(tableArray[i]);
         }
@@ -185,10 +184,6 @@ function App() {
         }
       }
     }
-    //console.log(workingTableDict);
-    //console.log(workingFieldDict);
-    //console.log(workingCheckBoxDict);
-    setCheckBoxDictionary(workingCheckBoxDict);
     setTableNamesDict(workingTableDict);
     setFieldNamesDict(workingFieldDict);
   };
@@ -262,11 +257,6 @@ function App() {
         let returnDicts = response.data;
         let tableDict = returnDicts["Tables"];
         let fieldDict = returnDicts["Fields"];
-        //console.log(tableDict);
-        //console.log(tableNamesDict);
-        //console.log(fieldDict);
-        //console.log(fieldNamesDict);
-        //console.log(fieldDict["1"][0][0]);
         setTableNamesDict(tableDict);
         for (const [key] of Object.entries(fieldDict)) {
           let fieldNameArr = fieldDict[key][0];
@@ -313,7 +303,6 @@ function App() {
             inputName.indexOf("-field")
           )
         );
-        //let oldaddAtFieldIndex = parseInt(inputName.charAt(14)) - 1;
         let addAtFieldIndex =
           parseInt(
             inputName.substring(
@@ -347,7 +336,8 @@ function App() {
       setCheckBoxDictionary(workingCheckBoxDict);
     };
     refreshState();
-  }, []);
+    updateCheckBoxDict();
+  }, [tableNamesDict, fieldNamesDict]);
 
   const updateCheckBoxDict = () => {
     let workingCheckBoxDict = [];
@@ -355,10 +345,18 @@ function App() {
     for (let i = 0; i < checkBoxes.length; i++) {
       workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
     }
+    checkBoxDictRef.current = workingCheckBoxDict;
     setCheckBoxDictionary(workingCheckBoxDict);
   };
 
+  /**
+   * Runs when a user checks/unchecks a checkbox.
+   * Passed as a handler to EntryFields component which triggers it.
+   *
+   * @param {Updated checkBoxes dictionary from EntryFields component} checkBoxes
+   */
   const checkBoxUpdateHandler = (checkBoxes) => {
+    checkBoxDictRef.current = checkBoxes;
     setCheckBoxDictionary(checkBoxes);
   };
 
