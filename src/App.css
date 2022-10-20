@@ -44,6 +44,15 @@
   left: 3vw;
 }
 
+.checkbox {
+  position: relative;
+  left: 1vw;
+}
+
+#field-name-wrapper {
+  justify-self: left;
+}
+
 #button-wrapper {
   display: grid;
   grid-template-columns: 7vw 18vw;

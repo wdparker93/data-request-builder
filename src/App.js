@@ -445,12 +445,13 @@ function App() {
                 Delete Field(s)
               </button>
             </div>
+
             <button
               className="button"
-              id="test-capture-state-button"
-              onClick={captureState}
+              id="submit-field-data-button"
+              onClick={submitFieldData}
             >
-              Save Data
+              Export to Excel
             </button>
             <button
               className="button"
@@ -461,10 +462,10 @@ function App() {
             </button>
             <button
               className="button"
-              id="submit-field-data-button"
-              onClick={submitFieldData}
+              id="test-capture-state-button"
+              onClick={captureState}
             >
-              Export Data
+              Save Session Config to .txt
             </button>
             <div id="file-select-upload-wrapper">
               <button
