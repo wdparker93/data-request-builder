@@ -11,7 +11,7 @@ DONE 10. Build check/uncheck all button
 DONE 11. Need to update checkbox array upone deletion correctly
 DONE 12. Launch file explorer when reading from text file
 DONE 13. Checkboxes not updating when clicking export. Need to fix.
-14. Make load from text file handle check boxes
+DONE 14. Make load from text file handle check boxes
 15. Make save button save to text file
 
 THIS IS HOW TO INSTALL PYTHON IN VIRTUAL ENVIRONMENT

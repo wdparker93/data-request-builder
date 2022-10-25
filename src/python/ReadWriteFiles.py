@@ -76,7 +76,6 @@ def readFromTextFile():
     inputText = ''
     with storage.stream as f:
         inputText = f.read()
-        print(inputText)
     #Write byte stream to temporary text file to make it easier when parsing
     currentDirectory = os.getcwd()
     tempTextFile = currentDirectory + '\\TempOutputFile.txt'
@@ -84,7 +83,9 @@ def readFromTextFile():
         f.write(inputText)
     #Parse temporary text file into data structures
     tableDict = {}
-    fieldDict = {}
+    tableCheckBoxDict = {}
+    fieldNameDict = {}
+    fieldCheckBoxDict = {}
     with open(tempTextFile, 'r') as f:
         lineNum = 1
         tableCounter = 1
@@ -92,15 +93,31 @@ def readFromTextFile():
             line = line.replace('\r', '')
             line = line.replace('\n', '')
             if lineNum % 2 != 0:
-                tableDict[str(tableCounter)] = line
+                indexOfColon = line.index(':')
+                tableName = line[:indexOfColon]
+                checkBoxValue = line[indexOfColon + 1:]
+                tableDict[str(tableCounter)] = tableName
+                tableCheckBoxDict[str(tableCounter)] = checkBoxValue
             else:
                 fieldArr = [line.split(',')]
-                fieldDict[str(tableCounter)] = fieldArr
+                fieldArr = fieldArr[0]
+                fieldNameArr = []
+                checkBoxValueArr = []
+                for field in fieldArr:
+                    indexOfColon = field.index(':')
+                    fieldName = field[:indexOfColon]
+                    checkBoxValue = field[indexOfColon + 1:]
+                    fieldNameArr.append(fieldName)
+                    checkBoxValueArr.append(checkBoxValue)
+                fieldNameDict[str(tableCounter)] = fieldNameArr
+                fieldCheckBoxDict[str(tableCounter)] = checkBoxValueArr
                 tableCounter += 1
             lineNum += 1
     returnDict = {}
     returnDict['Tables'] = tableDict
-    returnDict['Fields'] = fieldDict
+    returnDict['Table-Boxes'] = tableCheckBoxDict
+    returnDict['Fields'] = fieldNameDict
+    returnDict['Field-Boxes'] = fieldCheckBoxDict
     #Delete the temporary text file
     os.remove(tempTextFile)
     #Return the data structure with fields assigned and organized

@@ -16,10 +16,10 @@ function App() {
   const [addFieldEnabled, setAddFieldEnabled] = useState(false);
   const [deleteFieldEnabled, setDeleteFieldEnabled] = useState(false);
   const [uploadFromFileEnabled, setUploadFromFileEnabled] = useState(false);
-  const [checkBoxDictionary, setCheckBoxDictionary] = useState([]);
+  const [checkBoxDict, setCheckBoxDict] = useState([]);
   const [file, setFile] = useState("");
   const inputFile = useRef(null);
-  const checkBoxDictRef = useRef(checkBoxDictionary);
+  const checkBoxDictRef = useRef(checkBoxDict);
 
   //Table selection and handling logic
   const addTableName = () => {
@@ -145,7 +145,7 @@ function App() {
     checkBoxKey += "-name-checkbox";
     let workingTableDict = Object.assign({}, tableNamesDict);
     let workingFieldDict = Object.assign({}, fieldNamesDict);
-    let workingCheckBoxDict = Object.assign({}, checkBoxDictionary);
+    let workingCheckBoxDict = Object.assign({}, checkBoxDict);
     if (
       fieldToDelete === "All" ||
       workingFieldDict[tableKeyToDelete].length === 1
@@ -194,10 +194,10 @@ function App() {
   const submitFieldData = () => {
     let checkBoxParamArray = [];
     let index = 0;
-    for (const [key] of Object.entries(checkBoxDictionary)) {
+    for (const [key] of Object.entries(checkBoxDict)) {
       let entryArray = [];
       entryArray.splice(0, 0, key);
-      entryArray.splice(1, 0, checkBoxDictionary[key]);
+      entryArray.splice(1, 0, checkBoxDict[key]);
       checkBoxParamArray.splice(index, 0, entryArray);
       index++;
     }
@@ -258,16 +258,30 @@ function App() {
         let tableDict = returnDicts["Tables"];
         let fieldDict = returnDicts["Fields"];
         setTableNamesDict(tableDict);
-        for (const [key] of Object.entries(fieldDict)) {
-          let fieldNameArr = fieldDict[key][0];
-          let arrToSet = [];
-          for (let i = 0; i < fieldNameArr.length; i++) {
-            arrToSet.push(fieldNameArr[i]);
-          }
-          fieldDict[key] = [];
-          fieldDict[key] = arrToSet;
-        }
         setFieldNamesDict(fieldDict);
+        let tableCheckBoxDict = returnDicts["Table-Boxes"];
+        let fieldCheckBoxDict = returnDicts["Field-Boxes"];
+        let workingCheckBoxDict = [];
+        for (const [key, value] of Object.entries(tableCheckBoxDict)) {
+          let entryKey = "table-" + key + "-name-checkbox";
+          let valueToSet = false;
+          if (value === "true") {
+            valueToSet = true;
+          }
+          workingCheckBoxDict[entryKey] = valueToSet;
+        }
+        for (const [key, value] of Object.entries(fieldCheckBoxDict)) {
+          for (let i = 0; i < value.length; i++) {
+            let entryKey =
+              "table-" + key + "-field-" + (i + 1) + "-name-checkbox";
+            let valueToSet = false;
+            if (value[i] === "true") {
+              valueToSet = true;
+            }
+            workingCheckBoxDict[entryKey] = valueToSet;
+          }
+        }
+        setCheckBoxDict(workingCheckBoxDict);
       },
       (error) => {
         console.log(error);
@@ -333,7 +347,7 @@ function App() {
       for (let i = 0; i < checkBoxes.length; i++) {
         workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
       }
-      setCheckBoxDictionary(workingCheckBoxDict);
+      setCheckBoxDict(workingCheckBoxDict);
     };
     refreshState();
     updateCheckBoxDict();
@@ -346,7 +360,7 @@ function App() {
       workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
     }
     checkBoxDictRef.current = workingCheckBoxDict;
-    setCheckBoxDictionary(workingCheckBoxDict);
+    setCheckBoxDict(workingCheckBoxDict);
   };
 
   /**
@@ -357,7 +371,7 @@ function App() {
    */
   const checkBoxUpdateHandler = (checkBoxes) => {
     checkBoxDictRef.current = checkBoxes;
-    setCheckBoxDictionary(checkBoxes);
+    setCheckBoxDict(checkBoxes);
   };
 
   const selectDeselectAll = () => {
@@ -376,7 +390,7 @@ function App() {
     for (let i = 0; i < checkBoxes.length; i++) {
       workingCheckBoxDict[checkBoxes[i].id] = valueToSet;
     }
-    setCheckBoxDictionary(workingCheckBoxDict);
+    setCheckBoxDict(workingCheckBoxDict);
   };
 
   //Render to browser
@@ -390,7 +404,7 @@ function App() {
           <EntryFields
             tableNamesParam={tableNamesDict}
             fieldNamesParam={fieldNamesDict}
-            checkBoxes={checkBoxDictionary}
+            checkBoxes={checkBoxDict}
             checkBoxUpdateHandler={checkBoxUpdateHandler}
           />
         </div>
