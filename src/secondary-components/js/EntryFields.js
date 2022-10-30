@@ -92,6 +92,7 @@ function EntryFields(props) {
       correspondingTableBoxId += "-name-checkbox";
       let tableBox = document.getElementById(correspondingTableBoxId);
       tableBox.checked = checkBox.checked;
+      workingCheckBoxDict[checkBox.id] = checkBox.checked;
     } else {
       workingCheckBoxDict[checkBox.id] = checkBox.checked;
     }

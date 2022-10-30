@@ -9,18 +9,20 @@ app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+@app.route("/saveToTextFile", methods=['POST'])
+def saveToTextFile():
+    tableNameDict = request.json['tableNames']
+    fieldNameDict = request.json['fieldNames']
+    checkBoxDict = request.json['checkBoxes']
+
 @app.route("/writeToExcelFile", methods=['POST'])
 def writeToExcelFile():
     
     tableNameDict = request.json['tableNames']
     fieldNameDict = request.json['fieldNames']
     checkBoxDict = request.json['checkBoxes']
-    print(tableNameDict)
-    print(fieldNameDict)
     tableCheckBoxDict = buildTableCheckBoxDict(checkBoxDict)
     fieldCheckBoxDict = buildFieldCheckBoxDict(checkBoxDict)
-    print(tableCheckBoxDict)
-    print(fieldCheckBoxDict)
 
     #Get to the project root folder,
     #then navigate to the output excel file
@@ -93,9 +95,21 @@ def readFromTextFile():
             line = line.replace('\r', '')
             line = line.replace('\n', '')
             if lineNum % 2 != 0:
-                indexOfColon = line.index(':')
-                tableName = line[:indexOfColon]
-                checkBoxValue = line[indexOfColon + 1:]
+                tableCheckBoxPresent = True
+                indexOfColon = 0
+                tableName = ''
+                checkBoxValue = ''
+                try:
+                    indexOfColon = line.index(':')
+                except:
+                    tableCheckBoxPresent = False
+                    pass
+                if tableCheckBoxPresent == True:
+                    tableName = line[:indexOfColon]
+                    checkBoxValue = line[indexOfColon + 1:]
+                else:
+                    tableName = line
+                    checkBoxValue = 'false'
                 tableDict[str(tableCounter)] = tableName
                 tableCheckBoxDict[str(tableCounter)] = checkBoxValue
             else:
@@ -104,9 +118,21 @@ def readFromTextFile():
                 fieldNameArr = []
                 checkBoxValueArr = []
                 for field in fieldArr:
-                    indexOfColon = field.index(':')
-                    fieldName = field[:indexOfColon]
-                    checkBoxValue = field[indexOfColon + 1:]
+                    fieldCheckBoxPresent = True
+                    indexOfColon = 0
+                    fieldName = ''
+                    checkBoxValue = ''
+                    try:
+                        indexOfColon = field.index(':')
+                    except:
+                        fieldCheckBoxPresent = False
+                        pass
+                    if fieldCheckBoxPresent == True:
+                        fieldName = field[:indexOfColon]
+                        checkBoxValue = field[indexOfColon + 1:]
+                    else:
+                        fieldName = field
+                        checkBoxValue = 'false'
                     fieldNameArr.append(fieldName)
                     checkBoxValueArr.append(checkBoxValue)
                 fieldNameDict[str(tableCounter)] = fieldNameArr
