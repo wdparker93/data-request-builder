@@ -347,10 +347,11 @@ function App() {
       for (let i = 0; i < checkBoxes.length; i++) {
         workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
       }
+      checkBoxDictRef.current = workingCheckBoxDict;
       setCheckBoxDict(workingCheckBoxDict);
     };
     refreshState();
-    updateCheckBoxDict();
+    //updateCheckBoxDict();
   }, [tableNamesDict, fieldNamesDict]);
 
   const updateCheckBoxDict = () => {
