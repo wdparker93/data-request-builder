@@ -9,15 +9,52 @@ app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route("/saveToTextFile", methods=['POST'])
+@app.route("/saveStateToTextFile", methods=['POST'])
 def saveToTextFile():
     tableNameDict = request.json['tableNames']
     fieldNameDict = request.json['fieldNames']
     checkBoxDict = request.json['checkBoxes']
+    tableCheckBoxDict = buildTableCheckBoxDict(checkBoxDict)
+    fieldCheckBoxDict = buildFieldCheckBoxDict(checkBoxDict)
+
+    #Get to the project root folder,
+    #then navigate to the output excel file
+    currentDirectory = Path(os.getcwd())
+    parentDirectory = currentDirectory
+    for i in range(2):
+        parentDirectory = parentDirectory.parent
+    os.chdir(str(parentDirectory) + '\\docs\\output')
+    outputPath = os.getcwd() + '\\SessionConfigOutput.txt'
+
+    #Open and close file to clear contents before write new config
+    open(outputPath, 'w').close()
+
+    with(open(outputPath, 'w')) as f:
+        for key in tableNameDict:
+            f.write(tableNameDict[key])
+            f.write(':')
+            tableCheckValue = 'true'
+            if (tableCheckBoxDict[key] == False):
+                tableCheckValue = 'false'
+            f.write(tableCheckValue)
+            f.write('\n')
+            fieldNameArr = fieldNameDict[key]
+            fieldBoxArr = fieldCheckBoxDict[key]
+            for i in range (len(fieldNameArr)):
+                f.write(fieldNameArr[i])
+                f.write(':')
+                fieldCheckValue = 'true'
+                if (fieldBoxArr[i] == False):
+                    fieldCheckValue = 'false'
+                f.write(fieldCheckValue)
+                if i < (len(fieldNameArr) - 1):
+                    f.write(',')
+            f.write('\n')
+
+    return make_response("Success", 200)
 
 @app.route("/writeToExcelFile", methods=['POST'])
 def writeToExcelFile():
-    
     tableNameDict = request.json['tableNames']
     fieldNameDict = request.json['fieldNames']
     checkBoxDict = request.json['checkBoxes']
@@ -165,7 +202,6 @@ def buildTableCheckBoxDict(checkBoxParam):
             #Add the fields to the dicionary's entry's array
             returnDictionary[tableNumberKey] = checkBoxCheckedVal
     return returnDictionary
-
 
 #Converts the checkBoxDict to a format that matches the field name dictionary
 def buildFieldCheckBoxDict(checkBoxParam):

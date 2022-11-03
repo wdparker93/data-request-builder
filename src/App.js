@@ -86,7 +86,6 @@ function App() {
     setFieldNamesDict(workingFieldNamesDict);
   };
 
-  //Sets the field currently selected
   const setFieldSelection = () => {
     let selectedTable = currentTableSelected;
     let fieldSelector = document.getElementById("field-selector");
@@ -189,9 +188,9 @@ function App() {
   };
 
   //Saving and processing section
-  //submitFieldData needs to call a Python script and output
+  //exportResultsToExcel needs to call a Python script and output
   //the current data definition to an excel sheet
-  const submitFieldData = () => {
+  const exportResultsToExcel = () => {
     let checkBoxParamArray = [];
     let index = 0;
     for (const [key] of Object.entries(checkBoxDict)) {
@@ -225,7 +224,7 @@ function App() {
     );
   };
 
-  const handleFileUpload = (e) => {
+  const enableDisableFileUpload = (e) => {
     const { files } = e.target;
     if (files && files.length) {
       const file = files[0];
@@ -289,6 +288,7 @@ function App() {
     );
   };
 
+  /*
   //Saves the state of the fields as they appear currently
   const captureState = () => {
     let inputs = document.getElementsByClassName("input-field");
@@ -339,6 +339,7 @@ function App() {
     setTableNamesDict(tableNamesWorkingDict);
     setFieldNamesDict(fieldNamesWorkingDict);
   };
+  */
 
   useEffect(() => {
     const refreshState = async () => {
@@ -354,6 +355,7 @@ function App() {
     //updateCheckBoxDict();
   }, [tableNamesDict, fieldNamesDict]);
 
+  /*
   const updateCheckBoxDict = () => {
     let workingCheckBoxDict = [];
     let checkBoxes = document.getElementsByClassName("checkbox");
@@ -362,6 +364,44 @@ function App() {
     }
     checkBoxDictRef.current = workingCheckBoxDict;
     setCheckBoxDict(workingCheckBoxDict);
+  };
+  */
+
+  const saveStateToTextFile = () => {
+    let checkBoxParamArray = [];
+    let index = 0;
+    for (const [key] of Object.entries(checkBoxDict)) {
+      let entryArray = [];
+      entryArray.splice(0, 0, key);
+      entryArray.splice(1, 0, checkBoxDict[key]);
+      checkBoxParamArray.splice(index, 0, entryArray);
+      index++;
+    }
+    console.log(tableNamesDict);
+    console.log(fieldNamesDict);
+    console.log(checkBoxParamArray);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    };
+    Axios.post(
+      "http://127.0.0.1:5000/saveStateToTextFile",
+      {
+        tableNames: tableNamesDict,
+        fieldNames: fieldNamesDict,
+        checkBoxes: checkBoxParamArray,
+      },
+      config
+    ).then(
+      (response) => {
+        //Ok
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   /**
@@ -464,7 +504,7 @@ function App() {
             <button
               className="button"
               id="submit-field-data-button"
-              onClick={submitFieldData}
+              onClick={exportResultsToExcel}
             >
               Export to Excel
             </button>
@@ -478,7 +518,7 @@ function App() {
             <button
               className="button"
               id="test-capture-state-button"
-              onClick={captureState}
+              onClick={saveStateToTextFile}
             >
               Save Session Config to .txt
             </button>
@@ -491,7 +531,11 @@ function App() {
               >
                 Import Fields from Text File
               </button>
-              <input ref={inputFile} onChange={handleFileUpload} type="file" />
+              <input
+                ref={inputFile}
+                onChange={enableDisableFileUpload}
+                type="file"
+              />
             </div>
           </div>
         </div>
