@@ -288,57 +288,6 @@ function App() {
     );
   };
 
-  //Saves the state of the fields as they appear currently
-  const captureState = () => {
-    let inputs = document.getElementsByClassName("input-field");
-    let tableNamesWorkingDict = {};
-    let fieldNamesWorkingDict = {};
-    for (let i = 0; i < inputs.length; i++) {
-      let input = inputs[i];
-      let inputName = input.name;
-      let inputId = input.id;
-      //inputName will either be like table-1-name or table-1-field-1-name
-      if (!inputName.includes("field")) {
-        //a table
-        let tableNumber = parseInt(
-          inputName.substring(
-            inputName.indexOf("table-") + 6,
-            inputName.indexOf("-name")
-          )
-        );
-        tableNamesWorkingDict[tableNumber] =
-          document.getElementById(inputId).value;
-      } else {
-        //a field
-        let tableNumber = parseInt(
-          inputName.substring(
-            inputName.indexOf("table-") + 6,
-            inputName.indexOf("-field")
-          )
-        );
-        let addAtFieldIndex =
-          parseInt(
-            inputName.substring(
-              inputName.indexOf("field-") + 6,
-              inputName.indexOf("-name")
-            )
-          ) - 1;
-        let currentTableFieldNames = [];
-        if (typeof fieldNamesWorkingDict[tableNumber] !== "undefined") {
-          currentTableFieldNames = fieldNamesWorkingDict[tableNumber];
-        }
-        currentTableFieldNames.splice(
-          addAtFieldIndex,
-          0,
-          document.getElementById(inputId).value
-        );
-        fieldNamesWorkingDict[tableNumber] = currentTableFieldNames;
-      }
-    }
-    setTableNamesDict(tableNamesWorkingDict);
-    setFieldNamesDict(fieldNamesWorkingDict);
-  };
-
   useEffect(() => {
     const refreshState = async () => {
       let workingCheckBoxDict = [];
@@ -352,18 +301,6 @@ function App() {
     refreshState();
     //updateCheckBoxDict();
   }, [tableNamesDict, fieldNamesDict]);
-
-  /*
-  const updateCheckBoxDict = () => {
-    let workingCheckBoxDict = [];
-    let checkBoxes = document.getElementsByClassName("checkbox");
-    for (let i = 0; i < checkBoxes.length; i++) {
-      workingCheckBoxDict[checkBoxes[i].id] = checkBoxes[i].checked;
-    }
-    checkBoxDictRef.current = workingCheckBoxDict;
-    setCheckBoxDict(workingCheckBoxDict);
-  };
-  */
 
   const saveStateToTextFile = () => {
     let checkBoxParamArray = [];
