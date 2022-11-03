@@ -288,7 +288,6 @@ function App() {
     );
   };
 
-  /*
   //Saves the state of the fields as they appear currently
   const captureState = () => {
     let inputs = document.getElementsByClassName("input-field");
@@ -339,7 +338,6 @@ function App() {
     setTableNamesDict(tableNamesWorkingDict);
     setFieldNamesDict(fieldNamesWorkingDict);
   };
-  */
 
   useEffect(() => {
     const refreshState = async () => {
@@ -415,6 +413,31 @@ function App() {
     setCheckBoxDict(checkBoxes);
   };
 
+  const fieldUpdateHandler = (fieldValue, elementName) => {
+    let isTableField = true;
+    if (elementName.includes("-field")) {
+      isTableField = false;
+    }
+    let tableNumber = 0;
+    let indexOfName = elementName.indexOf("-name");
+    if (!isTableField) {
+      let fieldNumStartIndex = elementName.indexOf("-field") + 7;
+      let fieldNumber = parseInt(
+        elementName.substring(fieldNumStartIndex, indexOfName)
+      );
+      tableNumber = parseInt(elementName.substring(6, fieldNumStartIndex - 7));
+      let workingFieldNamesDict = Object.assign({}, fieldNamesDict);
+      let fieldNameArr = workingFieldNamesDict[tableNumber];
+      fieldNameArr[fieldNumber - 1] = fieldValue;
+      workingFieldNamesDict[tableNumber] = fieldNameArr;
+    } else {
+      tableNumber = parseInt(elementName.substring(6, indexOfName));
+      let workingTableNamesDict = Object.assign({}, tableNamesDict);
+      workingTableNamesDict[tableNumber] = fieldValue;
+      setTableNamesDict(workingTableNamesDict);
+    }
+  };
+
   const selectDeselectAll = () => {
     let checkBoxes = document.getElementsByClassName("checkbox");
     let numChecked = 0;
@@ -447,6 +470,7 @@ function App() {
             fieldNamesParam={fieldNamesDict}
             checkBoxes={checkBoxDict}
             checkBoxUpdateHandler={checkBoxUpdateHandler}
+            fieldUpdateHandler={fieldUpdateHandler}
           />
         </div>
         <div id="button-section-wrapper">

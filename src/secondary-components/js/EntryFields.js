@@ -45,6 +45,7 @@ function EntryFields(props) {
             id={htmlElementName}
             size="30"
             className="input-field"
+            onChange={() => handleFieldUpdate(htmlElementName)}
             defaultValue={elementValue}
           ></input>
           <input
@@ -58,6 +59,11 @@ function EntryFields(props) {
         </form>
       </>
     );
+  };
+
+  const handleFieldUpdate = (elementName) => {
+    let fieldValue = document.getElementById(elementName).value;
+    props.fieldUpdateHandler(fieldValue, elementName);
   };
 
   const handleCheckBox = (elementName) => {
