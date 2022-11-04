@@ -1,5 +1,5 @@
 T1S:true
-T1F1:false,T1F2:true
+T1F1kk:false,T1F2:true
 T2:false
 T2F1S:false,T2F2:true,F:false,Poop:true,SDF:false,GGG:false
 T3:false

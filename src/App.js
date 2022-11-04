@@ -312,9 +312,6 @@ function App() {
       checkBoxParamArray.splice(index, 0, entryArray);
       index++;
     }
-    console.log(tableNamesDict);
-    console.log(fieldNamesDict);
-    console.log(checkBoxParamArray);
     const config = {
       headers: {
         "Content-Type": "application/json",
