@@ -14,12 +14,14 @@ DONE 13. Checkboxes not updating when clicking export. Need to fix.
 DONE 14. Make load from text file handle check boxes
 DONE 15. Make save button save to text file
 DONE 16. State not saving before writing to file
+DONE 17. Launch python servlet and react app simulataneously
+DONE 18. Create .bat file that launches app from desktop
+19. Make output work correctly when running from desktop
 
 THIS IS HOW TO INSTALL PYTHON IN VIRTUAL ENVIRONMENT
 1. Navigate to project's root directory and run py -m venv .venv
 2. Navigate to the .venv you created
 3. Run py -m pip install package-name
-4. To create venv run py -m venv .venv
 
 TO RUN APP AND PYTHON SEPARATELY (FOR DEVELOPMENT PURPOSES):
 1. Navigate to src\python and enter py ReadWriteFiles.py to launch Flask server
