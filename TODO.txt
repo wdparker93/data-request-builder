@@ -20,10 +20,15 @@ THIS IS HOW TO INSTALL PYTHON IN VIRTUAL ENVIRONMENT
 2. Run py -m pip install package-name
 3. To create venv run py -m venv .venv
 
-TO RUN APP:
+TO RUN APP AND PYTHON SEPARATELY (FOR DEVELOPMENT PURPOSES):
 1. Navigate to src\python and enter py ReadWriteFiles.py to launch Flask server
 2. Run npm run start to get react web app running.
 3. Once both are running React and Python will talk to each other.
 4. Not that the flask server URI when starting the Python server
    a. Running on http://127.0.0.1:5000
    b. This will be the endpoint for the react app
+
+TO RUN APP AND PYTHON SERVLET TOGETHER (FOR PRODUCTION USE):
+1. Navigate to project root folder
+2. Type npm run launch and press enter
+3. This will launch the Python flask servlet and the react app at the same time
