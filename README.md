@@ -9,6 +9,8 @@ To configure and launch the application:
 3. Double-click on the .bat file to launch the software. This should create a command line window which will launch the software in your browser.
 4. NOTE: Just because the application utilizes an internet browser as a GUI, it is not connected to the internet. The browser is just communicating with a server hosted locally by your computer.
 5. When finished using the application close both the browser and command line window.
+6. Data definition output files will get saved to a newly created Data Request Builder Output folder in your Documents folder (C:\Users\you\Document\Data Request Builder Output)
+7. Session configurations can be saved to a text file. Custom text files can also be generated and uploaded from the application to automatically pick up where a previous session left off or to start from a pre-configured template. The docs\input folder has two example text files with session configurations (one file with and another without checkbox true/false values)
 
 # Getting Started with Create React App
 
