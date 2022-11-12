@@ -1,4 +1,4 @@
-import openpyxl, os
+import openpyxl, os, datetime
 from pathlib import Path
 from flask import Flask
 from flask import request, make_response
@@ -17,19 +17,12 @@ def saveToTextFile():
     tableCheckBoxDict = buildTableCheckBoxDict(checkBoxDict)
     fieldCheckBoxDict = buildFieldCheckBoxDict(checkBoxDict)
 
-    #Get to the project root folder,
-    #then navigate to the output excel file
-    currentDirectory = Path(os.getcwd())
-    parentDirectory = currentDirectory
-    for i in range(2):
-        parentDirectory = parentDirectory.parent
-    os.chdir(str(parentDirectory) + '\\docs\\output')
-    outputPath = os.getcwd() + '\\SessionConfigOutput.txt'
-
+    outputFolder = confirmOutputDirectory()
+    outputFile = outputFolder + '\\SessionConfigOutput_' + datetime.datetime.now().strftime('%Y-%m-%d_%H.%M.%S') + '.txt'
     #Open and close file to clear contents before write new config
-    open(outputPath, 'w').close()
+    open(outputFile, 'w').close()
 
-    with(open(outputPath, 'w')) as f:
+    with(open(outputFile, 'w')) as f:
         for key in tableNameDict:
             f.write(tableNameDict[key])
             f.write(':')
@@ -61,37 +54,29 @@ def writeToExcelFile():
     tableCheckBoxDict = buildTableCheckBoxDict(checkBoxDict)
     fieldCheckBoxDict = buildFieldCheckBoxDict(checkBoxDict)
 
-    #Get to the project root folder,
-    #then navigate to the output excel file
-    currentDirectory = Path(os.getcwd())
-    parentDirectory = currentDirectory
-    for i in range(2):
-        parentDirectory = parentDirectory.parent
-    os.chdir(str(parentDirectory) + '\\docs\\output')
-    outputPath = os.getcwd() + '\\OutputDataDefinition.xlsx'
+    outputFolder = confirmOutputDirectory()
+    outputFile = outputFolder + '\\OutputDataDefinition_' + datetime.datetime.now().strftime('%Y-%m-%d_%H.%M.%S') + '.xlsx'
+    wb = openpyxl.Workbook()
+    wb.create_sheet('Table_Names')
+    wb.create_sheet('Field_Names')
+    wb.remove(wb['Sheet'])
+    wb.save(outputFile)
+    wb.close()
 
-    outputDataDefWB = openpyxl.load_workbook(outputPath)
+    outputDataDefWB = openpyxl.load_workbook(outputFile)
     tableSheet = outputDataDefWB['Table_Names']
     fieldSheet = outputDataDefWB['Field_Names']
 
     nameEntryCol = 1
     outputRow = 1
 
-    with(open(outputPath, "a")) as f:
-        #Clear the previous workbook's contents
-        for row in tableSheet['A1':'A1000']:
-            for cell in row:
-                cell.value = None
-        for row in fieldSheet['A1':'A1000']:
-            for cell in row:
-                cell.value = None
+    with(open(outputFile, "a")) as f:
         #Enter table names to table sheet
         for key in tableNameDict:
             if tableCheckBoxDict[key]:
                 tableSheet.cell(row=outputRow, column=nameEntryCol).value = tableNameDict[key]
                 outputRow += 1
 
-        
         #Reset the output row to row 1 before write to fields sheet
         outputRow = 1
 
@@ -104,7 +89,7 @@ def writeToExcelFile():
                         fieldSheet.cell(row=outputRow, column=nameEntryCol).value = fieldNames[i]
                         outputRow += 1
 
-        outputDataDefWB.save(filename=os.getcwd() + '\\OutputDataDefinition.xlsx')
+        outputDataDefWB.save(filename=outputFile)
     
     return make_response("Success", 200)
 
@@ -185,6 +170,14 @@ def readFromTextFile():
     os.remove(tempTextFile)
     #Return the data structure with fields assigned and organized
     return make_response(returnDict, 200)
+
+#Creates the output directory if it doesn't already exist
+def confirmOutputDirectory():
+    homeDir = os.path.expanduser('~')
+    outputFolder = homeDir + '\\Documents\\Data Request Builder Output'
+    if (os.path.exists(outputFolder) == False):
+        os.mkdir(outputFolder)
+    return outputFolder
 
 #Converts the checkBoxDict to a format that matches the table name dictionary
 def buildTableCheckBoxDict(checkBoxParam):

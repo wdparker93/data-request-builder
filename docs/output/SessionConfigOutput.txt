@@ -1,8 +1,0 @@
-T1S:true
-T1F1kk:false,T1F2:true
-T2:false
-T2F1S:false,T2F2:true,F:false,Poop:true,SDF:false,GGG:false
-T3:false
-T3F1:true,SD:false,:false,:true
-T4:false
-T4F1:true

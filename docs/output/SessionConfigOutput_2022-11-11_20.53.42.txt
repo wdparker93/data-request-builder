@@ -1,0 +1,4 @@
+T1:true
+T1F1:true,T1F2:false
+T2:true
+T2F1:false,T2F2:false
