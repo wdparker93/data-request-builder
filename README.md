@@ -1,3 +1,15 @@
+# USER OVERVIEW AND TUTORIAL (START HERE)
+
+This application was designed to streamline data definition processes.
+
+To configure and launch the application:
+
+1. Copy and paste the Data-Request-Builder.bat file from the project directory to the desired location on your computer
+2. Open and edit the .bat file using Notepad or another text editing program. Change the first command of the .bat file to use the install location of the application. For example, if the application is saved at C:\Users\me\data_request_builder, the first line of the .bat file would read "cd C:\Users\me\data_request_builder"
+3. Double-click on the .bat file to launch the software. This should create a command line window which will launch the software in your browser.
+4. NOTE: Just because the application utilizes an internet browser as a GUI, it is not connected to the internet. The browser is just communicating with a server hosted locally by your computer.
+5. When finished using the application close both the browser and command line window.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -38,6 +50,10 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+### `npm run launch`
+
+This script launches both the python backend server and the javascript frontend server to provide a full end-to-end user experience. This script will be what a user should run when they want to use the software as it was intended to be used.
 
 ## Learn More
 
