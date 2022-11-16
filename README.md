@@ -4,13 +4,19 @@ This application was designed to streamline data definition processes.
 
 To configure and launch the application:
 
-1. Copy and paste the Data-Request-Builder.bat file from the project directory to the desired location on your computer
-2. Open and edit the .bat file using Notepad or another text editing program. Change the first command of the .bat file to use the install location of the application. For example, if the application is saved at C:\Users\me\data_request_builder, the first line of the .bat file would read "cd C:\Users\me\data_request_builder"
-3. Double-click on the .bat file to launch the software. This should create a command line window which will launch the software in your browser.
-4. NOTE: Just because the application utilizes an internet browser as a GUI, it is not connected to the internet. The browser is just communicating with a server hosted locally by your computer.
-5. When finished using the application close both the browser and command line window.
-6. Data definition output files will get saved to a newly created Data Request Builder Output folder in your Documents folder (C:\Users\you\Document\Data Request Builder Output)
-7. Session configurations can be saved to a text file. Custom text files can also be generated and uploaded from the application to automatically pick up where a previous session left off or to start from a pre-configured template. The docs\input folder has two example text files with session configurations (one file with and another without checkbox true/false values)
+1. Clone the application repository into a directory of your choice on your computer.
+2. Download and install Python from https://www.python.org/downloads/.
+3. Download and install NodeJS from https://nodejs.org/en/download/.
+4. Add the installation location of NodeJS to your Path definition in your system environment variables.
+5. Navigate to the project directory. Open and edit the DRB-First-Time_Setup.bat file with a text editing program like Notepad or Notepad++. Change the first command of the .bat file to use the install location of the application. For example, if the application is saved at C:\Users\me\data_request_builder, the first line of the .bat file would read "cd C:\Users\me\data_request_builder".
+6. Double-click the DRB-First-Time-Setup.bat file to download the required supporting software.
+7. Copy and paste the Data-Request-Builder.bat file from the project directory to the desired location on your computer
+8. Open and edit the .bat file using Notepad or another text editing program. Change the first command of the .bat file to use the install location of the application. For example, if the application is saved at C:\Users\me\data_request_builder, the first line of the .bat file would read "cd C:\Users\me\data_request_builder".
+9. Double-click on the .bat file to launch the software. This should create a command line window which will launch the software in your browser.
+10. NOTE: Just because the application utilizes an internet browser as a GUI, it is not connected to the internet. The browser is just communicating with a server hosted locally by your computer.
+11. When finished using the application close both the browser and command line window.
+12. Data definition output files will get saved to a newly created Data Request Builder Output folder in your Documents folder (C:\Users\you\Document\Data Request Builder Output)
+13. Session configurations can be saved to a text file. Custom text files can also be generated and uploaded to the application to automatically pick up where a previous session left off or to start from a pre-configured template. The docs\input folder has two example text files with session configurations (one file with and another without checkbox true/false values)
 
 # Getting Started with Create React App
 
